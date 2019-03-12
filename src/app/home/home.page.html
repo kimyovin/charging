@@ -1,0 +1,68 @@
+<ion-app>
+  <ion-header>
+    <ion-title>
+      <div class="headPhotoInfo">
+        2018년 11월 1일
+        <br>송파구 - 잠실2동
+      </div>
+    </ion-title>
+    <div>
+      <ion-buttons class="headSearchIcon">
+        <ion-button fill="outline">
+          <ion-icon slot="icon-only" name="search"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+</ion-header>
+
+<ion-content>
+  <div id="photo container">
+    <img src="../../assets/imgs/KakaoTalk_20180914_174904375.jpg">
+  </div>
+  
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="photofooter">
+    
+    <ion-grid>
+      <ion-row align-items="center">
+        <ion-col>
+              <ion-button >
+                  <ion-icon class="photofooter-menu" color="dark" name="share"></ion-icon>
+                </ion-button>
+              <ion-button >
+                  <ion-icon class="photofooter-menu" color="dark" name="trash"></ion-icon>
+                </ion-button>
+              <ion-button >
+                  <ion-icon class="photofooter-menu" color="dark" name="heart"></ion-icon>
+                </ion-button>
+              <ion-button (click)="tagBtnClick()">
+                  <img width="100%" src="../../assets/imgs/img_tag2.png"> 
+              </ion-button>
+            </ion-col>               
+          <!-- <ion-col col-sm>
+            <ion-button color="dark">
+                <ion-icon class="photofooter-menu" name="share"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col col-sm>
+            <button ion-button icon-only outline color="dark">
+              <ion-icon class="photofooter-menu" name="trash"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col col-sm>
+            <button ion-button icon-only outline color="dark">
+              <ion-icon class="photofooter-menu" name="heart"></ion-icon>
+            </button>
+          </ion-col>
+          <ion-col col-sm>
+            <button  ion-button icon-only outline color="dark" (click)="tagBtnClick()">
+              <img width="100%" src="../../assets/imgs/img_tag2.png">
+            </button>
+          </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
+</ion-app>
