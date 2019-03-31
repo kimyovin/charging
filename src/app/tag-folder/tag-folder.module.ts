@@ -5,12 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TagviewPage } from './tagview.page';
+import { TagFolderPage } from './tag-folder.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: TagviewPage
+    component: TagFolderPage
   }
 ];
 
@@ -21,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [TagviewPage]
+  declarations: [TagFolderPage]
 })
-export class TagviewPageModule {}
+export class TagFolderPageModule {}

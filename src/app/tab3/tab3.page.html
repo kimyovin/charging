@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <img class="tBnt" src="assets/edit.png" (click)='edit_bnt()'>
+      <img class="tBnt" style="float: right;" src="assets/search.png" (click)='edit_bnt()'> -->
+
+      <ion-button fill="clear">편집</ion-button>
+     
+      <ion-icon  name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>      
+    
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <!-- <ion-button (click)="navigate()" >if you click tag</ion-button> -->
+
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <div>
+              <img class="thumb" src="assets/image/img6.jpg" style="transform:rotate(90deg);" (click)="gotoTagFolder()">
+              <br>
+              Tag1
+          </div>
+      </ion-col>
+      <ion-col>
+        <div>
+            <img class="thumb" src="assets/image/img7.jpg" style="transform:rotate(90deg);">
+            <br>
+            Tag2
+        </div>
+    </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+          <div>
+              <img class="thumb" src="assets/image/img8.jpg" style="transform:rotate(90deg);">
+              <br>
+              Tag3
+          </div>
+      </ion-col>
+      <ion-col>
+        <div style="visibility: hidden">
+            <img class="thumb" src="assets/image/img10.jpg" style="transform:rotate(90deg);">
+            <br>
+            Tag4
+        </div>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

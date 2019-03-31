@@ -23,5 +23,5 @@ export class AppComponent {
     });
   }
 
-  public tags=['frame', 'door', 'knock'];
+  
 }

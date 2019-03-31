@@ -1,0 +1,82 @@
+
+    <ion-header>
+      <ion-toolbar>
+         
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-icon name="arrow-back" (click)="gotoBack()" size="large" class="backButton"></ion-icon>
+            </ion-col>
+            <ion-col>
+              <ion-label class="headPhotoInfo"> 날짜</ion-label><br>
+              <ion-label class="headPhotoInfo"> 위치 </ion-label>   
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      
+      </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding="5px">
+    <div id="photo container">
+      <ion-slides loop="true" class="thumb-img" >
+        <ion-slide id="content" *ngFor="let img of imgs">
+         <img src="'assets/imgs/1.jpg'"  style="transform:rotate(90deg);"/>
+        </ion-slide>
+      </ion-slides> 
+    </div>
+
+    <ion-grid>
+
+      <ion-row class="edit_button" size="1">
+          <ion-button slots="end"  fill="clear" (click)="edit_tags()" [hidden]="hiddenFlag">태그 편집</ion-button>
+      </ion-row>
+      <ion-row>
+        <ion-buttons *ngFor="let item of tags">
+          <ion-button  *ngIf="item !== undefined" class="tag" 
+          (click)="tagModifyBtnClick()" id="oldtag{{tags.indexOf(item)}}">{{item}}</ion-button>
+        </ion-buttons>
+      </ion-row>
+    </ion-grid >
+
+  </ion-content>
+  
+  <ion-footer [hidden]="hiddenFlag">
+    <ion-toolbar>
+      
+      <ion-grid>
+        <ion-row> 
+          <ion-col align-self-center>
+              <ion-icon class="icons_detail" name="share"></ion-icon>
+          </ion-col>
+
+          <ion-col align-self: center>
+            <ion-icon  class="icons_detail" name="heart-empty"></ion-icon>
+          </ion-col>
+          
+          <ion-col align-self: center>
+              <ion-icon  class="icons_detail" name="trash"></ion-icon>
+          </ion-col>
+   
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-footer>
+
+  <ion-footer [hidden]="!hiddenFlag">
+      <ion-toolbar class="photofooter">
+        
+        <ion-grid>
+          <ion-row align-items="center">
+            <ion-col col-4>
+                  <ion-button  fill="clear"> 수정 </ion-button>
+                  <ion-button  fill="clear"> 삭제 </ion-button>
+                  <ion-button  fill="clear" (click) = "presentAlertPromptAdd()"> 추가 </ion-button>  
+                  <ion-button  fill="clear" (click)="backtoDetail()" [hidden]="!hiddenFlag"> 완료 </ion-button>
+              </ion-col>      
+          </ion-row>
+        </ion-grid>
+  
+      </ion-toolbar>
+      </ion-footer>
+  

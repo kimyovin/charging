@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <img class="tBnt" src="assets/edit.png" (click)='edit_bnt()'>
+    <img class="tBnt" style="float: right;" src="assets/search.png" (click)='edit_bnt()'> -->
+
+    <ion-button fill="clear">편집</ion-button>
+    <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>        
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<!-- <ion-button (click)="navigate()" >if you click album</ion-button> -->
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+          <div>
+              <img class="thumb"  src="assets/image/img1.jpg" style="transform:rotate(90deg);" (click)="gotoFolder()">
+              <br>
+              Folder1
+          </div>
+      </ion-col>
+      <ion-col>
+        <div>
+            <img class="thumb" src="assets/image/img2.jpg" style="transform:rotate(90deg);">
+            <br>
+            Folder2
+        </div>
+    </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+          <div>
+              <img class="thumb"  src="assets/image/img3.jpg" style="transform:rotate(90deg);">
+              <br>
+              Folder3
+          </div>
+      </ion-col>
+      <ion-col>
+        <div>
+            <img class="thumb"  src="assets/image/img4.jpg" style="transform:rotate(90deg);">
+            <br>
+            Folder4
+        </div>
+    </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+</ion-content>
+
+
+</ion-content>

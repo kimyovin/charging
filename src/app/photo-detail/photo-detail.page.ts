@@ -1,27 +1,49 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
 import { AppComponent } from '../app.component';
-import { ActionSheetController, AlertController } from '@ionic/angular';
-import { parseHttpResponse } from 'selenium-webdriver/http';
+import { ActivatedRoute} from '@angular/router';
+
 
 @Component({
-  selector: 'app-tagview',
-  templateUrl: './tagview.page.html',
-  styleUrls: ['./tagview.page.scss'],
+  selector: 'app-photo-detail',
+  templateUrl: './photo-detail.page.html',
+  styleUrls: ['./photo-detail.page.scss'],
 })
-
-export class TagviewPage implements OnInit {
+export class PhotoDetailPage implements OnInit{
   tags=[];
+ //photo=null;
 
-  constructor(public actionSheetController: ActionSheetController,
-    public appcomponent: AppComponent,
+  
+  constructor(public navCtrl: NavController, 
     public alertController: AlertController,
-    // public tagClass: TagClass,
-    ) { 
+    public appcomponent: AppComponent,
+    public actionSheetController: ActionSheetController,
+    //private activatedRoute:ActivatedRoute,
+    ){
+      
       this.tags=['frame', 'door', 'knock', ];
     }
-
-  ngOnInit() {
+    
+    ngOnInit(){
+      //this.photo = this.activatedRoute.snapshot.paramMap.get('photo');
+    }
+    
+  public tagBtnClick(){
+    this.navCtrl.navigateForward('/tagview');
   }
+
+  gotoBack() {
+    this.navCtrl.pop();
+  }
+
+  hiddenFlag:boolean = false;
+  edit_tags() {
+    this.hiddenFlag=true;
+  }
+  backtoDetail(){
+    this.hiddenFlag=false;
+  }
+
   //직접 태그 눌러서 수정or삭제
   async tagModifyBtnClick(){
     const actionSheet = await this.actionSheetController.create({
@@ -51,6 +73,7 @@ export class TagviewPage implements OnInit {
     });
     await actionSheet.present();
   }
+  
 
   //태그를 직접 눌러서 수정하기
   async presentAlertPromptModify() { 
@@ -84,8 +107,8 @@ export class TagviewPage implements OnInit {
     await alertModify.present();
   }
 
-  //Footer 직접 추가하기
-  async presentAlertPromptAdd() {
+   //Footer 직접 추가하기
+   async presentAlertPromptAdd() {
     const alertModify = await this.alertController.create({
       header: '새로운 태그 입력',
       inputs: [
