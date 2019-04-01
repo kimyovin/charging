@@ -34,7 +34,7 @@
       <ion-row>
         <ion-buttons *ngFor="let item of tags">
           <ion-button  *ngIf="item !== undefined" class="tag" 
-          (click)="tagModifyBtnClick()" id="oldtag{{tags.indexOf(item)}}">{{item}}</ion-button>
+          (click)="tagModifyBtnClick(item)">{{item}}</ion-button>
         </ion-buttons>
       </ion-row>
     </ion-grid >

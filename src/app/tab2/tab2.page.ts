@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {NavController} from '@ionic/angular';
+import {NavController, AlertController, ActionSheetController} from '@ionic/angular';
 @Component({
   selector: 'app-tab2',
   templateUrl: './tab2.page.html',
@@ -8,12 +8,35 @@ import {NavController} from '@ionic/angular';
 })
 export class Tab2Page implements OnInit {
 
-  constructor(private router:Router, public navCtrl:NavController) { }
+  folders: any;
+  example: any;
+   hiddenFlag: boolean = false;
+
+  constructor(private router:Router, public navCtrl:NavController,
+    public alertController: AlertController,
+    public actionSheetController: ActionSheetController,
+    ) {
+
+      this.folders=[
+        {folderName: 'travel', image:'assets/image/img1.jpg'},
+        {folderName: 'study', image:'assets/image/img2.jpg'},
+        {folderName: 'friends', image:'assets/image/img3.jpg'},
+        {folderName: 'classic', image:'assets/image/img4.jpg'},
+      ]
+      this.example = [];
+   }
 
   ngOnInit() {
   }
 
-  hiddenFlag:boolean=false;
+  edit_album() {
+    this.hiddenFlag = true;
+  }
+
+  finish_edit() {
+    this.hiddenFlag = false;
+  }
+
   hideButton(){
     this.hiddenFlag=true;
   }
@@ -29,9 +52,100 @@ export class Tab2Page implements OnInit {
     this.navCtrl.navigateForward('/album-folder');
   }
 
-
-
   navigate(){
     this.router.navigateByUrl('/album-folder')
+  }
+
+  // 직접 태그 눌러서 수정or삭제
+  async folderModifyBtnClick() {
+    const actionSheet = await this.actionSheetController.create({
+      buttons: [{
+        text : '수정하기',
+        handler: () => {
+          console.log('수정하기 clicked');
+          this.presentAlertPromptModify();
+        }
+      },
+      {
+        text : '삭제하기',
+        handler: () => {
+          console.log('삭제하기 clicked');
+          // 직접 태그 눌러서 삭제하기 기능
+          this.folders.splice(this.folders.indexOf(document.getElementById( ' folder ' )), 1);
+        }
+      },
+    {
+      text: '취소',
+      role: 'destructive',
+
+      handler: () => {
+        console.log('취소 clicked');
+      }
+    }]
+    });
+    await actionSheet.present();
+  }
+
+
+  //태그를 직접 눌러서 수정하기
+  async presentAlertPromptModify() {
+    const alertModify = await this.alertController.create({
+      header: '태그 입력',
+      inputs: [
+        {
+          name: 'newFolder',
+          type: 'text',
+          placeholder: 'document.getElementById("folder").innerText'
+        }
+      ],
+      buttons: [
+        {
+          text: '취소',
+          role: 'cancle',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        },
+        {
+          text: '완료',
+          handler: data => {
+            console.log('Modify Folder: ' + document.getElementById('folder{{tags.indexOf(item)}}') + ' => ' + data.newFolder);
+            this.folders.splice(this.folders.indexOf(document.getElementById('folder{{tags.indexOf(item)}}')), 1, data.newFolder);
+        }
+        }
+      ],
+    });
+
+    await alertModify.present();
+  }
+
+   // Footer 직접 추가하기
+   async presentAlertPromptAdd() {
+    const alertModify = await this.alertController.create({
+      header: '새로운 폴더 이름 입력',
+      inputs: [
+        {
+          name: 'newFolder',
+          type: 'text',
+          placeholder: 'New Folder'
+        }
+      ],
+      buttons: [
+        {
+          text: '취소',
+          handler: () => {
+            console.log('Footer Add Cancel');
+          }
+        },
+        {
+          text: '완료',
+          handler: data => {
+            console.log('Add newFolder:' + data.newFolder);
+            this.folders.push(data.newFolder);
+        }
+        }
+      ],
+    });
+    await alertModify.present();
   }
 }

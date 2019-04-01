@@ -1,56 +1,46 @@
 <ion-header>
-  <ion-toolbar>
     <!-- <img class="tBnt" src="assets/edit.png" (click)='edit_bnt()'>
     <img class="tBnt" style="float: right;" src="assets/search.png" (click)='edit_bnt()'> -->
 
-    <ion-button fill="clear">편집</ion-button>
+    <ion-toolbar [hidden]="hiddenFlag">
+      <ion-button fill="clear" (click)="edit_album()" >편집</ion-button>
     <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>        
-
   </ion-toolbar>
+  <ion-toolbar [hidden]="!hiddenFlag">
+    <ion-grid>
+      <ion-row>
+          <ion-button fill="clear">+</ion-button>
+          <ion-button fill="clear">수정</ion-button>
+          <ion-button fill="clear">삭제</ion-button>
+          <ion-button fill="clear" (click)="finish_edit()">완료</ion-button>
+      </ion-row>
+    </ion-grid>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
-<!-- <ion-button (click)="navigate()" >if you click album</ion-button> -->
-
 <ion-content padding>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-          <div>
-              <img class="thumb"  src="assets/image/img1.jpg" style="transform:rotate(90deg);" (click)="gotoFolder()">
-              <br>
-              Folder1
-          </div>
-      </ion-col>
-      <ion-col>
+  <ion-grid class="grid-category">
+    <ion-row *ngFor="let folder of folders; index as i">
+      <ion-col col-3  *ngIf="i%2==0">
         <div>
-            <img class="thumb" src="assets/image/img2.jpg" style="transform:rotate(90deg);">
-            <br>
-            Folder2
-        </div>
-    </ion-col>
+          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);">
+          <br>
+          <label>{{folder.folderName}}</label>
+      </div>
+      </ion-col>
     </ion-row>
-
-    <ion-row>
-      <ion-col>
-          <div>
-              <img class="thumb"  src="assets/image/img3.jpg" style="transform:rotate(90deg);">
-              <br>
-              Folder3
-          </div>
-      </ion-col>
-      <ion-col>
+  </ion-grid>
+  <ion-grid class="grid-category">
+    <ion-row *ngFor="let folder of folders; index as i">
+      <ion-col col-3  *ngIf="i%2 !=0">
         <div>
-            <img class="thumb"  src="assets/image/img4.jpg" style="transform:rotate(90deg);">
-            <br>
-            Folder4
-        </div>
-    </ion-col>
+          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);">
+          <br>
+          <label>{{folder.folderName}}</label>
+      </div>
+      </ion-col>
     </ion-row>
   </ion-grid>
   
 </ion-content>
 
-
-</ion-content>

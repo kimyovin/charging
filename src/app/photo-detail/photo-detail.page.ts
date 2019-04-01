@@ -21,7 +21,11 @@ export class PhotoDetailPage implements OnInit{
     //private activatedRoute:ActivatedRoute,
     ){
       
-      this.tags=['frame', 'door', 'knock', ];
+      this.tags=[
+        "frame",
+        "door",
+        "knock",
+       ];
     }
     
     ngOnInit(){
@@ -45,13 +49,14 @@ export class PhotoDetailPage implements OnInit{
   }
 
   //직접 태그 눌러서 수정or삭제
-  async tagModifyBtnClick(){
+  async tagModifyBtnClick(oldtagId: any){
     const actionSheet = await this.actionSheetController.create({
       buttons: [{
         text : '수정하기',
         handler: () => {
           console.log('수정하기 clicked');
-          this.presentAlertPromptModify();
+
+          this.presentAlertPromptModify(oldtagId);
         }
       },
       {
@@ -59,7 +64,9 @@ export class PhotoDetailPage implements OnInit{
         handler: () => {
           console.log('삭제하기 clicked');
           //직접 태그 눌러서 삭제하기 기능
-          this.tags.splice(this.tags.indexOf(document.getElementById("oldtag")), 1);
+          console.log('oldtagID: '+oldtagId);
+
+          this.tags.splice(this.tags.indexOf(oldtagId), 1);
         }
       },
     {
@@ -76,14 +83,14 @@ export class PhotoDetailPage implements OnInit{
   
 
   //태그를 직접 눌러서 수정하기
-  async presentAlertPromptModify() { 
+  async presentAlertPromptModify(oldtagId:any) { 
     const alertModify = await this.alertController.create({
       header: '태그 입력',
       inputs: [
         {
           name: 'newtag',
           type: 'text',
-          placeholder: 'document.getElementById("oldtag").innerText'
+          placeholder: 'New Tag'
         }
       ],
       buttons: [
@@ -98,7 +105,7 @@ export class PhotoDetailPage implements OnInit{
           text: '완료',
           handler: data => {
             console.log('Modify tag: '+ document.getElementById("oldtag{{tags.indexOf(item)}}") +' => '+ data.newtag);
-            this.tags.splice(this.tags.indexOf(document.getElementById("oldtag{{tags.indexOf(item)}}")), 1, data.newtag);
+            this.tags.splice(this.tags.indexOf(oldtagId), 1, data.newtag);
         }
         }
       ],
