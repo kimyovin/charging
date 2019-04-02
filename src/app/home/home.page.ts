@@ -21,15 +21,15 @@ export class HomePage {
       console.log('#home들어감');
 
     /***Using cordovaGallery plugin***/
-      cordovaGallery.load({ count: 10, }).then(items => {
+    //   cordovaGallery.load({ count: 10, }).then(items => {
        
-        items.forEach(item => {
-          this.imgs.push('file://'+item.thumbnail);
-          console.log("#Item.thumbnail: "+item.thumbnail);
+    //     items.forEach(item => {
+    //       this.imgs.push('file://'+item.thumbnail);
+    //       console.log("#Item.thumbnail: "+item.thumbnail);
         
-        });
+    //     });
     
-    }).catch(e => console.error('#cordovaGallery Error'+e));
+    // }).catch(e => console.error('#cordovaGallery Error'+e));
 
   }
 

@@ -10,7 +10,7 @@ export class Tab2Page implements OnInit {
 
   folders: any;
   example: any;
-   hiddenFlag: boolean = false;
+  hiddenFlag: boolean = false;
 
   constructor(private router:Router, public navCtrl:NavController,
     public alertController: AlertController,
@@ -56,14 +56,14 @@ export class Tab2Page implements OnInit {
     this.router.navigateByUrl('/album-folder')
   }
 
-  // 직접 태그 눌러서 수정or삭제
-  async folderModifyBtnClick() {
+  //React to click Folder
+  async folderModifyBtnClick(oldFolder: any) {
     const actionSheet = await this.actionSheetController.create({
       buttons: [{
         text : '수정하기',
         handler: () => {
           console.log('수정하기 clicked');
-          this.presentAlertPromptModify();
+          this.presentAlertPromptModify(oldFolder);
         }
       },
       {
@@ -71,7 +71,7 @@ export class Tab2Page implements OnInit {
         handler: () => {
           console.log('삭제하기 clicked');
           // 직접 태그 눌러서 삭제하기 기능
-          this.folders.splice(this.folders.indexOf(document.getElementById( ' folder ' )), 1);
+          this.folders.splice(this.folders.indexOf(oldFolder), 1);
         }
       },
     {
@@ -86,16 +86,15 @@ export class Tab2Page implements OnInit {
     await actionSheet.present();
   }
 
-
-  //태그를 직접 눌러서 수정하기
-  async presentAlertPromptModify() {
+  //Modify FolderName
+  async presentAlertPromptModify(oldFolder) {
     const alertModify = await this.alertController.create({
-      header: '태그 입력',
+      header: '폴더 이름 입력',
       inputs: [
         {
           name: 'newFolder',
           type: 'text',
-          placeholder: 'document.getElementById("folder").innerText'
+          placeholder: 'Modify New name'
         }
       ],
       buttons: [
@@ -109,8 +108,9 @@ export class Tab2Page implements OnInit {
         {
           text: '완료',
           handler: data => {
-            console.log('Modify Folder: ' + document.getElementById('folder{{tags.indexOf(item)}}') + ' => ' + data.newFolder);
-            this.folders.splice(this.folders.indexOf(document.getElementById('folder{{tags.indexOf(item)}}')), 1, data.newFolder);
+            console.log('Modify Folder: ' + oldFolder.folderName + ' => ' + data.newFolder);
+            this.folders[this.folders.indexOf(oldFolder)].folderName = data.newFolder;
+//            this.folders.splice(this.folders.indexOf(oldFolder), 1, data.newFolder);
         }
         }
       ],
@@ -119,7 +119,7 @@ export class Tab2Page implements OnInit {
     await alertModify.present();
   }
 
-   // Footer 직접 추가하기
+   // Add Folder
    async presentAlertPromptAdd() {
     const alertModify = await this.alertController.create({
       header: '새로운 폴더 이름 입력',
@@ -134,15 +134,15 @@ export class Tab2Page implements OnInit {
         {
           text: '취소',
           handler: () => {
-            console.log('Footer Add Cancel');
+            console.log('Folder Add Cancel');
           }
         },
         {
           text: '완료',
           handler: data => {
             console.log('Add newFolder:' + data.newFolder);
-            this.folders.push(data.newFolder);
-        }
+            this.folders.push({folderName: data.newFolder, image: 'assets/image/img9.jpg'});  //image is selected by ImagePicker
+          }
         }
       ],
     });

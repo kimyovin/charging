@@ -48,7 +48,7 @@ export class PhotoDetailPage implements OnInit{
     this.hiddenFlag=false;
   }
 
-  //직접 태그 눌러서 수정or삭제
+  //React to click Tag Button; delete tag()은 여기서 끝
   async tagModifyBtnClick(oldtagId: any){
     const actionSheet = await this.actionSheetController.create({
       buttons: [{
@@ -82,7 +82,7 @@ export class PhotoDetailPage implements OnInit{
   }
   
 
-  //태그를 직접 눌러서 수정하기
+  //Modify tag
   async presentAlertPromptModify(oldtagId:any) { 
     const alertModify = await this.alertController.create({
       header: '태그 입력',
@@ -90,7 +90,7 @@ export class PhotoDetailPage implements OnInit{
         {
           name: 'newtag',
           type: 'text',
-          placeholder: 'New Tag'
+          placeholder: 'Modify New Tag'
         }
       ],
       buttons: [
@@ -114,7 +114,7 @@ export class PhotoDetailPage implements OnInit{
     await alertModify.present();
   }
 
-   //Footer 직접 추가하기
+   //Add Tag
    async presentAlertPromptAdd() {
     const alertModify = await this.alertController.create({
       header: '새로운 태그 입력',

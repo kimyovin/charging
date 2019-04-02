@@ -9,7 +9,7 @@
   <ion-toolbar [hidden]="!hiddenFlag">
     <ion-grid>
       <ion-row>
-          <ion-button fill="clear">+</ion-button>
+          <ion-button fill="clear" (click)="presentAlertPromptAdd()">+</ion-button>
           <ion-button fill="clear">수정</ion-button>
           <ion-button fill="clear">삭제</ion-button>
           <ion-button fill="clear" (click)="finish_edit()">완료</ion-button>
@@ -23,9 +23,10 @@
     <ion-row *ngFor="let folder of folders; index as i">
       <ion-col col-3  *ngIf="i%2==0">
         <div>
-          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);">
+          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);"
+            (click)="folderModifyBtnClick(folder)">
           <br>
-          <label>{{folder.folderName}}</label>
+          <label (click)="folderModifyBtnClick(folder)">{{folder.folderName}}</label>
       </div>
       </ion-col>
     </ion-row>
@@ -34,9 +35,10 @@
     <ion-row *ngFor="let folder of folders; index as i">
       <ion-col col-3  *ngIf="i%2 !=0">
         <div>
-          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);">
+          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);"
+            (click)="folderModifyBtnClick(folder)">
           <br>
-          <label>{{folder.folderName}}</label>
+          <label (click)="folderModifyBtnClick(folder)">{{folder.folderName}}</label>
       </div>
       </ion-col>
     </ion-row>
