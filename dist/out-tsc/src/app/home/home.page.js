@@ -3,51 +3,35 @@ import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { PhotoLibrary } from '@ionic-native/photo-library/ngx';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
-import * as cordovaGallery from 'cordova-gallery-access';
+//import * as cordovaGallery from 'cordova-gallery-access'; 
 var HomePage = /** @class */ (function () {
     function HomePage(navCtrl, photoLibrary, photoViewer) {
-        var _this = this;
         this.navCtrl = navCtrl;
         this.photoLibrary = photoLibrary;
         this.photoViewer = photoViewer;
-        this.imgs = [];
-        this.photoPath = "../../assets/imgs/1.jpg";
+        this.imgs = ['assets/imgs/1.jpg', 'assets/imgs/2.jpg', 'assets/imgs/3.jpg', 'assets/imgs/4.jpg',
+            'assets/imgs/5.jpg', 'assets/imgs/6.jpg',];
+        console.log('#home들어감');
         /***Using cordovaGallery plugin***/
-        cordovaGallery.load().then(function (items) {
-            var html = '';
-            items.forEach(function (item) {
-                _this.imgs.push(item.thumbnail);
-                html += "<img src=\"file://" + item.thumbnail + "\"></img>";
-            });
-            document.getElementById("content").innerHTML = html;
-        }).catch(function (e) { return console.error(e); });
-        cordovaGallery.load({
-            albumType: 'PHAssetCollectionSubtypeSmartAlbumUserLibrary',
-            count: 10
-        });
-        /* Using PhotoLibrary plugin */
-        // this.photoLibrary.requestAuthorization().then(() => {
-        //   this.photoLibrary.getLibrary().subscribe({
-        //     next: library => {
-        //       library.forEach(function(libraryItem){
-        //         this.photoPath=libraryItem.photoURL;
-        //         console.log(libraryItem.id);          // ID of the photo
-        //         console.log(libraryItem.photoURL);    // Cross-platform access to photo
-        //         this.imgs.push(libraryItem.photoURL);
-        //         console.log(libraryItem.thumbnailURL);// Cross-platform access to thumbnail
-        //         console.log(libraryItem.albumIds);    // array of ids of appropriate AlbumItem, only of includeAlbumsData was used
-        //       });
-        //     },
-        //     error: err => { console.log('could not get photos');},
-        //     complete: () => { console.log('done getting photos');}
-        //   });
-        // })
-        // .catch(err => console.log('permissions weren\'t granted'));
-        /* Using PhotoViewer plugin */
-        //this.photoViewer.show(this.photoPath);
+        //   cordovaGallery.load({ count: 10, }).then(items => {
+        //     items.forEach(item => {
+        //       this.imgs.push('file://'+item.thumbnail);
+        //       console.log("#Item.thumbnail: "+item.thumbnail);
+        //     });
+        // }).catch(e => console.error('#cordovaGallery Error'+e));
     }
-    HomePage.prototype.tagBtnClick = function () {
-        this.navCtrl.navigateForward('/tagview');
+    HomePage.prototype.navigate = function () {
+        this.navCtrl.navigateForward('/photo-like');
+    };
+    // photo="assets/image/img1.jpg";
+    // gotoDetail(){
+    //   this.navCtrl.navigateForward(`/photo-detail/${this.photo}`);
+    // }
+    HomePage.prototype.gotoDetail = function () {
+        this.navCtrl.navigateForward('/photo-detail');
+    };
+    HomePage.prototype.gotoSearch = function () {
+        this.navCtrl.navigateForward('/search');
     };
     HomePage = tslib_1.__decorate([
         Component({

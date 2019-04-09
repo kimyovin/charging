@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
 import { AppComponent } from '../app.component';
 import { ActivatedRoute} from '@angular/router';
+// import * as vision from'@google-cloud/vision';
 
 
 @Component({
@@ -13,13 +14,27 @@ export class PhotoDetailPage implements OnInit{
   tags=[];
  //photo=null;
 
-  
+ // Imports the Google Cloud client library
+
+// Creates a client
+// client = new vision.ImageAnnotatorClient();
+
+// Performs label detection on the image file
+
   constructor(public navCtrl: NavController, 
     public alertController: AlertController,
     public appcomponent: AppComponent,
     public actionSheetController: ActionSheetController,
     //private activatedRoute:ActivatedRoute,
     ){
+      // try{
+      //   const [result] = this.client.labelDetection('assets/imgs/1.jpg');
+      //   const labels = result.labelAnnotations;
+      //   console.log('Labels:');
+      //   labels.forEach(label => console.log(label.description));
+      // }catch(err) {
+      //   console.error('ERROR:', err);
+      // };
       
       this.tags=[
         "frame",
@@ -90,7 +105,7 @@ export class PhotoDetailPage implements OnInit{
         {
           name: 'newtag',
           type: 'text',
-          placeholder: 'Modify New Tag'
+          placeholder: oldtagId,
         }
       ],
       buttons: [

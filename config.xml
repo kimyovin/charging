@@ -87,4 +87,6 @@
     <plugin name="cordova-plugin-photo-library" spec="^2.2.1" />
     <plugin name="com-sarriaroman-photoviewer" spec="^1.2.1" />
     <plugin name="com.subitolabs.android.cordova.galleryapi" spec="git+https://github.com/Collaborne/cordova-gallery-api.git" />
+    <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.3.2" />
+    <plugin name="cordova-plugin-filepath" spec="^1.5.1" />
 </widget>

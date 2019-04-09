@@ -18,16 +18,17 @@
   </ion-header>
   
   <ion-content padding="5px">
+    <!--Photo-->
     <div id="photo container">
       <ion-slides loop="true" class="thumb-img" >
         <ion-slide id="content" *ngFor="let img of imgs">
-         <img src="'assets/imgs/1.jpg'"  style="transform:rotate(90deg);"/>
+         <img src="assets/imgs/1.jpg"  style="transform:rotate(90deg);"/>
         </ion-slide>
-      </ion-slides> 
+      </ion-slides>
     </div>
 
+    <!--Tag-->
     <ion-grid>
-
       <ion-row class="edit_button" size="1">
           <ion-button slots="end"  fill="clear" (click)="edit_tags()" [hidden]="hiddenFlag">태그 편집</ion-button>
       </ion-row>
@@ -38,7 +39,6 @@
         </ion-buttons>
       </ion-row>
     </ion-grid >
-
   </ion-content>
   
   <ion-footer [hidden]="hiddenFlag">

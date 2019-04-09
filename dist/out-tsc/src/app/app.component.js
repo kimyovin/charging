@@ -8,7 +8,6 @@ var AppComponent = /** @class */ (function () {
         this.platform = platform;
         this.splashScreen = splashScreen;
         this.statusBar = statusBar;
-        this.tags = ['frame', 'door', 'knock'];
         this.initializeApp();
     }
     AppComponent.prototype.initializeApp = function () {
