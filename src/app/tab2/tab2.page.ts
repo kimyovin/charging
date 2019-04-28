@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/Camera/ngx';
 import {Router} from '@angular/router';
 import { NavController, AlertController, ActionSheetController, ToastController, Platform} from '@ionic/angular';
-// import { ImagePicker } from '@ionic-native/image-picker/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { async } from 'q';
+
+import { FolderToServerController } from '../http-controller/folderToServer'
+
 @Component({
   selector: 'app-tab2',
   templateUrl: './tab2.page.html',
@@ -24,6 +25,7 @@ export class Tab2Page implements OnInit {
     // private imagePicker: ImagePicker,
     private camera: Camera,
     private filePath: FilePath,
+    private folderToServerController: FolderToServerController,
     ) {
 
       this.folders=[
@@ -32,6 +34,18 @@ export class Tab2Page implements OnInit {
         {folderName: 'friends', image:'assets/image/img3.jpg'},
       ]
       this.example = [];
+
+      folderToServerController.getRead().subscribe(data => {
+        console.log("##[FoldergetRead]subscribe 받음: "+data)
+        const json = JSON.stringify(data)
+        const items = JSON.parse(json)
+        items.forEach(item => {
+          this.folders.push({ folderName: item.folder_name, image: item.main_photo});
+          console.log('#[FoldergetRead]ToServer| item.folder_name: '+item.folder_name+' /item.main_photo: '+item.main_photo);
+        });
+      }, error => {
+        console.log(error);
+      })
    }
 
   ngOnInit() {
@@ -64,16 +78,16 @@ export class Tab2Page implements OnInit {
     this.router.navigateByUrl('/album-folder')
   }
 
-  newAddimage: string;
-  newName: string;
   //Plus new Folder
-  async createNewFolder(){
+ newAddimage: string;
+ newName: string;
+ async createNewFolder(){
     this.presentToast("앨범의 대표 사진을 선택해주세요");
 
     this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
     this.presentAlertPromptAdd();
     
-  }
+   }
  
 takePicture(sourceType: PictureSourceType) {
     var options: CameraOptions = {
@@ -84,6 +98,7 @@ takePicture(sourceType: PictureSourceType) {
     };
     console.log("### I'm in TakePicture() !!");
     this.camera.getPicture(options).then(imagePath => {
+      console.log('##[getPicture] item.id: '+ imagePath)
         if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
             this.filePath.resolveNativePath(imagePath)
                 .then(filePath => {
@@ -122,6 +137,11 @@ takePicture(sourceType: PictureSourceType) {
           console.log('삭제하기 clicked');
           // 직접 태그 눌러서 삭제하기 기능
           this.folders.splice(this.folders.indexOf(oldFolder), 1);
+          this.folderToServerController.getDel(oldFolder.folderName).subscribe(data =>{
+            console.log(data['_body']);
+          }, error => {
+            console.log(error);
+          });
         }
       },
     {
@@ -159,7 +179,14 @@ takePicture(sourceType: PictureSourceType) {
           text: '완료',
           handler: data => {
             console.log('Modify Folder: ' + oldFolder.folderName + ' => ' + data.newFolder);
+            this.folderToServerController.getUp(oldFolder.folderName, data.newFolder).subscribe(data =>{
+              console.log('##[FoldergetUp]subscribe 받음: '+data);
+            }, error => {
+              console.log('##[FoldergetUp]Error: '+error);
+            });
+            console.log('Modify Folder2: ' + oldFolder.folderName + ' => ' + data.newFolder);
             this.folders[this.folders.indexOf(oldFolder)].folderName = data.newFolder;
+    
         }
         }
       ],
@@ -193,6 +220,11 @@ takePicture(sourceType: PictureSourceType) {
             this.newName = data.newFolder;
             this.folders.push({folderName: this.newName, image: this.newAddimage});
             console.log("##NewName : "+this.newName + " || NewAddimage : "+ this.newAddimage);
+            this.folderToServerController.postCreate(this.newName, this.newAddimage, this.newAddimage).subscribe(data =>{
+              console.log(data['_body']);
+            }, error => {
+              console.log(error);
+            });
             console.log("##Adding NewFolder Success !!");
           }
         }
@@ -205,7 +237,7 @@ takePicture(sourceType: PictureSourceType) {
   async presentToast(msg: string) {
     const toast = await this.toastController.create({
       message: msg,
-      duration: 2000
+      duration: 4000
     });
     toast.present();
   }

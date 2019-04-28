@@ -8,7 +8,7 @@
               <ion-icon name="arrow-back" (click)="gotoBack()" size="large" class="backButton"></ion-icon>
             </ion-col>
             <ion-col>
-              <ion-label class="headPhotoInfo"> 날짜</ion-label><br>
+              <ion-label class="headPhotoInfo">{{date}}</ion-label><br>
               <ion-label class="headPhotoInfo"> 위치 </ion-label>   
             </ion-col>
           </ion-row>
@@ -22,7 +22,7 @@
     <div id="photo container">
       <ion-slides loop="true" class="thumb-img" >
         <ion-slide id="content" *ngFor="let img of imgs">
-         <img src="assets/imgs/1.jpg"  style="transform:rotate(90deg);"/>
+         <img src="{{img}}" />
         </ion-slide>
       </ion-slides>
     </div>

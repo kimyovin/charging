@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import { NavController } from '@ionic/angular';
 
+import { TagfolderToServerController } from '../http-controller/tagfolderToServer'
+
 @Component({
   selector: 'app-tab3',
   templateUrl: './tab3.page.html',
@@ -9,7 +11,22 @@ import { NavController } from '@ionic/angular';
 })
 export class Tab3Page implements OnInit {
 
-  constructor(private router:Router, public navCtrl: NavController) { }
+  tagfolders=[];
+  constructor(private router:Router, public navCtrl: NavController,
+    private tagfolderToServerController: TagfolderToServerController,
+    ) {
+      console.log('TAB3 들어옴')
+      tagfolderToServerController.getRead()
+      .subscribe(items => {
+        console.log("##[Tab3]subscribe 받음")
+        const data = JSON.stringify(items)
+        const json = JSON.parse(data)
+        json.forEach(item => {
+          this.tagfolders.push({tagName: item.tag_name, mainPhotoPath: item.photo_path_t});
+          console.log('#[Tab3]item.tag_name: '+item.tag_name+' /item.photo_path_t: '+item.photo_path_t);
+        });
+      })
+    }
 
   ngOnInit() {
   }

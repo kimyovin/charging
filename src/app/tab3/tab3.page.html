@@ -12,44 +12,29 @@
 </ion-header>
 
 <ion-content>
-
-
   <!-- <ion-button (click)="navigate()" >if you click tag</ion-button> -->
-
-
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-          <div>
-              <img class="thumb" src="assets/image/img6.jpg" style="transform:rotate(90deg);" (click)="gotoTagFolder()">
-              <br>
-              Tag1
-          </div>
-      </ion-col>
-      <ion-col>
+  <ion-grid class="grid-category">
+    <ion-row *ngFor="let folder of tagfolders; index as i">
+      <ion-col col-3  *ngIf="i%2==0">
         <div>
-            <img class="thumb" src="assets/image/img7.jpg" style="transform:rotate(90deg);">
-            <br>
-            Tag2
-        </div>
-    </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col>
-          <div>
-              <img class="thumb" src="assets/image/img8.jpg" style="transform:rotate(90deg);">
-              <br>
-              Tag3
-          </div>
+          <img class="thumb" src="{{folder.mainPhotoPath}}" (click)="folderModifyBtnClick(folder)">
+          <br>
+          <label (click)="folderModifyBtnClick(folder)">{{folder.tagName}}</label>
+      </div>
       </ion-col>
-      <ion-col>
-        <div style="visibility: hidden">
-            <img class="thumb" src="assets/image/img10.jpg" style="transform:rotate(90deg);">
-            <br>
-            Tag4
-        </div>
-    </ion-col>
     </ion-row>
   </ion-grid>
+  <ion-grid class="grid-category">
+    <ion-row *ngFor="let folder of tagfolders; index as i">
+      <ion-col col-3  *ngIf="i%2 !=0">
+        <div>
+          <img class="thumb" src="{{folder.mainPhotoPath}}" (click)="folderModifyBtnClick(folder)">
+          <br>
+          <label (click)="folderModifyBtnClick(folder)">{{folder.tagName}}</label>
+      </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+    
 </ion-content>

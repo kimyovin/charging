@@ -23,8 +23,7 @@
     <ion-row *ngFor="let folder of folders; index as i">
       <ion-col col-3  *ngIf="i%2==0">
         <div>
-          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);"
-            (click)="folderModifyBtnClick(folder)">
+          <img class="thumb" src="{{folder.image}}" (click)="folderModifyBtnClick(folder)">
           <br>
           <label (click)="folderModifyBtnClick(folder)">{{folder.folderName}}</label>
       </div>
@@ -35,8 +34,7 @@
     <ion-row *ngFor="let folder of folders; index as i">
       <ion-col col-3  *ngIf="i%2 !=0">
         <div>
-          <img class="thumb" src="{{folder.image}}" style="transform:rotate(90deg);"
-            (click)="folderModifyBtnClick(folder)">
+          <img class="thumb" src="{{folder.image}}" (click)="folderModifyBtnClick(folder)">
           <br>
           <label (click)="folderModifyBtnClick(folder)">{{folder.folderName}}</label>
       </div>

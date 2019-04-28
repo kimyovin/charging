@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
 import { AppComponent } from '../app.component';
 import { ActivatedRoute} from '@angular/router';
-// import * as vision from'@google-cloud/vision';
+import { TagToServerController }from'../http-controller/tagToServer'
+import { PhotoLibrary } from '@ionic-native/photo-library/ngx';
 
 
 @Component({
@@ -12,6 +13,8 @@ import { ActivatedRoute} from '@angular/router';
 })
 export class PhotoDetailPage implements OnInit{
   tags=[];
+  imgs=['assets/imgs/1.jpg', ];
+  date: any;
  //photo=null;
 
  // Imports the Google Cloud client library
@@ -25,25 +28,48 @@ export class PhotoDetailPage implements OnInit{
     public alertController: AlertController,
     public appcomponent: AppComponent,
     public actionSheetController: ActionSheetController,
+    private tagToServerController: TagToServerController,
+    private photolibrary: PhotoLibrary,
     //private activatedRoute:ActivatedRoute,
     ){
-      // try{
-      //   const [result] = this.client.labelDetection('assets/imgs/1.jpg');
-      //   const labels = result.labelAnnotations;
-      //   console.log('Labels:');
-      //   labels.forEach(label => console.log(label.description));
-      // }catch(err) {
-      //   console.error('ERROR:', err);
-      // };
-      
       this.tags=[
-        "frame",
-        "door",
-        "knock",
+        "test1"
        ];
-    }
+       tagToServerController.postRead(this.imgs[0]).subscribe(items => {
+        console.log("##subscribe 받음")
+        const data = JSON.stringify(items)
+        const json = JSON.parse(data)
+        json.forEach(item => {
+          this.tags.push(item.tag_name);
+          console.log('#[PHOTO-DETAIL]ToServer_item.tag_name: '+item.tag_name);
+        });
+      })
+
+      //get photo data/time
+      // const option={
+      //   thumbnailWidth: number;
+      //   thumbnailHeight?: number;
+      //   quality?: number;
+      //   itemsInChunk?: number;
+      //   chunkTimeSec?: number;
+      //   useOriginalFileNames?: boolean;
+      //   includeAlbumData?: boolean;
+      //   includeVideos?: boolean;
+      //   maxItems?: number;
+      // }
+     
+    //   error: err => { console.log('could not get photos'); },
+    //   complete: () => { console.log('done getting photos'); }
+    // });
+    //   photolibrary.getPhoto(this.imgs[0], ).then(item => {
+    //     this.date = item.creationDate;
+    //     console.log('##[photo-detail] date:'+ this.date + ' / item.creationDate: '+item.creationDate);
+    //   }).catch(error => console.log('##[photo-detail]Error get date: '+error));
+
+  
+  }
     
-    ngOnInit(){
+  ngOnInit(){
       //this.photo = this.activatedRoute.snapshot.paramMap.get('photo');
     }
     
@@ -80,8 +106,12 @@ export class PhotoDetailPage implements OnInit{
           console.log('삭제하기 clicked');
           //직접 태그 눌러서 삭제하기 기능
           console.log('oldtagID: '+oldtagId);
-
           this.tags.splice(this.tags.indexOf(oldtagId), 1);
+          this.tagToServerController.postDel(this.imgs[0], oldtagId).subscribe(data => {
+            console.log('#[PHOTO-DETAIL] postDel response :'+data['_body']);
+           }, error => {
+            console.log(error);
+          });
         }
       },
     {
@@ -121,6 +151,12 @@ export class PhotoDetailPage implements OnInit{
           handler: data => {
             console.log('Modify tag: '+ document.getElementById("oldtag{{tags.indexOf(item)}}") +' => '+ data.newtag);
             this.tags.splice(this.tags.indexOf(oldtagId), 1, data.newtag);
+            this.tagToServerController.postUp(this.imgs[0], oldtagId, data.newtag).subscribe(data => {
+              console.log('#[PHOTO-DETAIL] postUp response :'+data['_body']);
+             }, error => {
+              console.log(error);
+            });
+            
         }
         }
       ],
@@ -152,6 +188,13 @@ export class PhotoDetailPage implements OnInit{
           handler: data => {
             console.log('Add newtag:'+data.newtag);
             this.tags.push(data.newtag);
+            this.tagToServerController.postCreate( this.imgs[0], data.newtag).subscribe(data => {
+              console.log('#[PHOTO-DETAIL] postCreate response :'+data['_body']);
+             }, error => {
+              console.log(error);
+            });
+
+            console.log('Tag Upload Success !!');
         }
         }
       ],
