@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   googleCloudVisionAPIKey: "AIzaSyDmeO2k8iemOJjv4hvA7gJMFKqbxSHfPoI",
-  serverURL: "http://1.224.52.232:9010",
+  serverURL: "http://192.168.1.39:9010",
 };
 
 /*

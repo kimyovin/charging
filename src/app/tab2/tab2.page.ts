@@ -119,8 +119,6 @@ takePicture(sourceType: PictureSourceType) {
     });
 }
   
-
-
   //React to click Folder
   async folderModifyBtnClick(oldFolder: any) {
     const actionSheet = await this.actionSheetController.create({

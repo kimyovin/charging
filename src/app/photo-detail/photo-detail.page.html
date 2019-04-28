@@ -8,7 +8,7 @@
               <ion-icon name="arrow-back" (click)="gotoBack()" size="large" class="backButton"></ion-icon>
             </ion-col>
             <ion-col>
-              <ion-label class="headPhotoInfo">{{date}}</ion-label><br>
+              <ion-label class="headPhotoInfo">{{ParPhoto.creationDate}}</ion-label><br>
               <ion-label class="headPhotoInfo"> 위치 </ion-label>   
             </ion-col>
           </ion-row>
@@ -18,13 +18,17 @@
   </ion-header>
   
   <ion-content padding="5px">
-    <!--Photo-->
+<!--Photo
     <div id="photo container">
       <ion-slides loop="true" class="thumb-img" >
         <ion-slide id="content" *ngFor="let img of imgs">
          <img src="{{img}}" />
         </ion-slide>
       </ion-slides>
+    </div>
+-->
+    <div id="photo container">
+      <img src = "{{ParPhoto.image}}"/>
     </div>
 
     <!--Tag-->
@@ -47,7 +51,7 @@
       <ion-grid>
         <ion-row> 
           <ion-col align-self-center>
-              <ion-icon class="icons_detail" name="share"></ion-icon>
+              <button class="icons_detail" name="share"  (click)="shareBntClick()">공유</button>
           </ion-col>
 
           <ion-col align-self: center>

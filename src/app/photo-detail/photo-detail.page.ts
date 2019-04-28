@@ -4,7 +4,8 @@ import { AppComponent } from '../app.component';
 import { ActivatedRoute} from '@angular/router';
 import { TagToServerController }from'../http-controller/tagToServer'
 import { PhotoLibrary } from '@ionic-native/photo-library/ngx';
-
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-photo-detail',
@@ -13,9 +14,8 @@ import { PhotoLibrary } from '@ionic-native/photo-library/ngx';
 })
 export class PhotoDetailPage implements OnInit{
   tags=[];
-  imgs=[ ];
-  date: any;
-  photo: any;
+  imgs=[];
+  ParPhoto = null;
  //photo=null;
 
  // Imports the Google Cloud client library
@@ -32,12 +32,17 @@ export class PhotoDetailPage implements OnInit{
     private tagToServerController: TagToServerController,
     private photolibrary: PhotoLibrary,
     private activatedRoute:ActivatedRoute,
+    private socialSharing: SocialSharing,
+    private file: File
     ){
-      this.tags=[
-        "test1"
-       ];
-       tagToServerController.postRead(this.imgs[this.imgs.indexOf(this.photo)]).subscribe(items => {
-        console.log("##subscribe 받음")
+    }
+    
+  ngOnInit(){
+    console.log('#im in ngOnInit')
+      this.ParPhoto = JSON.parse(this.activatedRoute.snapshot.paramMap.get('photo'));
+      // this.imgs.push(this.ParPhoto);
+      this.tagToServerController.postRead(this.ParPhoto.image).subscribe(items => {
+        console.log("##PHOTO-DETAIL: subscribe 받음")
         const data = JSON.stringify(items)
         const json = JSON.parse(data)
         json.forEach(item => {
@@ -45,34 +50,6 @@ export class PhotoDetailPage implements OnInit{
           console.log('#[PHOTO-DETAIL]ToServer_item.tag_name: '+item.tag_name);
         });
       })
-
-      //get photo data/time
-      // const option={
-      //   thumbnailWidth: number;
-      //   thumbnailHeight?: number;
-      //   quality?: number;
-      //   itemsInChunk?: number;
-      //   chunkTimeSec?: number;
-      //   useOriginalFileNames?: boolean;
-      //   includeAlbumData?: boolean;
-      //   includeVideos?: boolean;
-      //   maxItems?: number;
-      // }
-     
-    //   error: err => { console.log('could not get photos'); },
-    //   complete: () => { console.log('done getting photos'); }
-    // });
-    //   photolibrary.getPhoto(this.imgs[0], ).then(item => {
-    //     this.date = item.creationDate;
-    //     console.log('##[photo-detail] date:'+ this.date + ' / item.creationDate: '+item.creationDate);
-    //   }).catch(error => console.log('##[photo-detail]Error get date: '+error));
-
-  
-  }
-    
-  ngOnInit(){
-      this.photo = this.activatedRoute.snapshot.paramMap.get('photo');
-
     }
     
   public tagBtnClick(){
@@ -109,7 +86,7 @@ export class PhotoDetailPage implements OnInit{
           //직접 태그 눌러서 삭제하기 기능
           console.log('oldtagID: '+oldtagId);
           this.tags.splice(this.tags.indexOf(oldtagId), 1);
-          this.tagToServerController.postDel(this.imgs[0], oldtagId).subscribe(data => {
+          this.tagToServerController.postDel(this.ParPhoto, oldtagId).subscribe(data => {
             console.log('#[PHOTO-DETAIL] postDel response :'+data['_body']);
            }, error => {
             console.log(error);
@@ -153,7 +130,7 @@ export class PhotoDetailPage implements OnInit{
           handler: data => {
             console.log('Modify tag: '+ document.getElementById("oldtag{{tags.indexOf(item)}}") +' => '+ data.newtag);
             this.tags.splice(this.tags.indexOf(oldtagId), 1, data.newtag);
-            this.tagToServerController.postUp(this.imgs[0], oldtagId, data.newtag).subscribe(data => {
+            this.tagToServerController.postUp(this.ParPhoto, oldtagId, data.newtag).subscribe(data => {
               console.log('#[PHOTO-DETAIL] postUp response :'+data['_body']);
              }, error => {
               console.log(error);
@@ -190,8 +167,8 @@ export class PhotoDetailPage implements OnInit{
           handler: data => {
             console.log('Add newtag:'+data.newtag);
             this.tags.push(data.newtag);
-            this.tagToServerController.postCreate( this.imgs[0], data.newtag).subscribe(data => {
-              console.log('#[PHOTO-DETAIL] postCreate response :'+data['_body']);
+            this.tagToServerController.postCreate(this.ParPhoto, data.newtag).subscribe(data => {
+              console.log('#[PHOTO-DETAIL] postCreate response :'+ data['_body']);
              }, error => {
               console.log(error);
             });
@@ -202,5 +179,69 @@ export class PhotoDetailPage implements OnInit{
       ],
     });
     await alertModify.present();
+  }
+
+  async shareBntClick() {
+    const actionSheet = await this.actionSheetController.create({
+      buttons: [
+        {
+        text : '이미지 공유',
+        handler: () => {
+          console.log('이미지공유 clicked');
+          this.shareOnlyImage();
+          // this.presentAlertPromptModify(oldtagId);
+        }
+      },
+      {
+        text : '태그 공유',
+        handler: () => {
+          console.log('태그공유 clicked');
+          this.shareOnlyTags();
+
+          // this.tags.splice(this.tags.indexOf(oldtagId), 1);
+        }
+      },
+    {
+      text: '취소',
+      role: 'destructive',
+
+      handler: () => {
+        console.log('취소 clicked');
+      }
+    }]
+    });
+    await actionSheet.present();
+
+  }
+
+  async resolveLocalFile() {
+    return this.file.copyFile(`${this.file.applicationDirectory}assets/imgs/`, '4.jpg',
+    this.file.cacheDirectory, `${new Date().getTime()}.jpg`);
+  }
+
+  removeTempFile(name) {
+    this.file.removeFile(this.file.cacheDirectory, name);
+  }
+
+  async shareOnlyImage() {
+    // tslint:disable-next-line:prefer-const
+    let file = await this.resolveLocalFile();
+
+    this.socialSharing.share(null, null, file.nativeURL, null)
+    .then((entries) => {
+      this.removeTempFile(file.name);
+    }).catch((e) => {
+      // Error!
+    });
+
+  }
+  async shareOnlyTags() {
+    const arr = this.tags.toString();
+    this.socialSharing.share(arr, null, null, null)
+    .then((entries) => {
+      // Success
+    }).catch((e) => {
+      // Error
+    });
   }
 }

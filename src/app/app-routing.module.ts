@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'tab3', loadChildren: './tab3/tab3.module#Tab3PageModule' },
   { path: 'album-folder', loadChildren: './album-folder/album-folder.module#AlbumFolderPageModule' },
   { path: 'album-folder-like', loadChildren: './album-folder-like/album-folder-like.module#AlbumFolderLikePageModule' },
-  { path: 'photo-detail', loadChildren: './photo-detail/photo-detail.module#PhotoDetailPageModule' },
+  { path: 'photo-detail/:photo', loadChildren: './photo-detail/photo-detail.module#PhotoDetailPageModule' },
   { path: 'photo-like', loadChildren: './photo-like/photo-like.module#PhotoLikePageModule' },
   { path: 'search', loadChildren: './search/search.module#SearchPageModule' },
   { path: 'tag-folder', loadChildren: './tag-folder/tag-folder.module#TagFolderPageModule' },

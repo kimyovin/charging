@@ -40,38 +40,23 @@ export class HomePage {
             this.newimg.concat(JSON.parse(library)).forEach((item) =>{
               item.library.forEach((photo, i)=>{
                 let path:string = 'file://'+ photo.id.split(';')[1];
-                console.log('#path_item.id:'+i+'번째, '+path);
-                this.imgs.push({image: path, like: null});
-                console.log('#newimg에서 path '+i+' : '+ path);
+                let date = photo.creationDate
+                this.imgs.push({image: path, like: null, creationDate: date});
+                console.log('#newimg에서 path '+i+' : '+date+' / ' + path);
               })
             })
 
-            // this.printArray( this.imgs.concat(JSON.parse(library)));
-            // this.imgs.forEach(function(libraryItem) {
-            //   console.log("#libraryItem.id: "+libraryItem.library[0].id);          // ID of the photo
-            //   console.log("#libraryItem.photoURL: "+libraryItem.library[0].photoURL);    // Cross-platform access to photo
-            //   console.log("#libraryItem.thumbnailURL: "+libraryItem.library[0].thumbnailURL);// Cross-platform access to thumbnail
-            //   // console.log("#libraryItem.fileName: "+libraryItem.library[0].fileName);
-            //   // console.log("#libraryItem.width: "+libraryItem.library[0].width);
-            //   // console.log("#libraryItem.height: "+libraryItem.library[0].height);
-            //   // console.log("#libraryItem.creationDate: "+libraryItem.library[0].creationDate);
-            //   // console.log("#libraryItem.latitude: "+libraryItem.library[0].latitude);
-            //   // console.log("#libraryItem.longitude: "+libraryItem.library[0].longitude);
-            //   // console.log("#libraryItem.albumIds: "+libraryItem.library[0].albumIds);    // array of ids of appropriate AlbumItem, only of includeAlbumsData was used
-            // });
-
-          //   this.imgs.push({image: alibrary.photoURL, like: null});
-          //     console.log('#pushing... photoURL: '+photo.photoURL);
-          // this.imgs.forEach(img=>{
-          //   console.log('##image: '+img.image);
-          // })
-            
+            this.imgs.forEach(img =>{
+              this.encodeBase64ImageTagviaCanvas(img.image).then(base64=>{
+                console.log('##base64: '+ base64);
+                this.photoToServerController.testimgPro(img.image, base64, img.creationDate);
+              })
+            });
           },
           error: err => { console.log('#library: could not get photos: '+ err); },
           complete: () => { console.log('#library: done getting photos'); }
         });
-
-
+            
       photoToServerController.getRead().subscribe(data => {
         console.log("##subscribe 받음: "+data)
         const json = JSON.stringify(data)
@@ -81,7 +66,6 @@ export class HomePage {
           console.log('#ToServer_item: '+item.photo_path);
         });
       })
-   
   }
 
   navigate(){  // 좋아하는 사진 페이지로 이동
@@ -96,7 +80,7 @@ export class HomePage {
   }
 
   gotoDetail(image){
-    const imgPath = this.imgs[this.imgs.indexOf(image)].image;
+    const imgPath = JSON.stringify(this.imgs[this.imgs.indexOf(image)]);
     this.router.navigate(['photo-detail', imgPath]);
   }
   

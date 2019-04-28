@@ -13,18 +13,20 @@ export class PhotoToServerController {
     this.headers.append('Content-Type', 'application/json' );
   }
 
-  testimgPro(photoPath, photoBase64){
+  testimgPro(photoPath, photoBase64, photoName){
     const httpOptions= {headers: this.headers}
     let body={
       "photo_path": photoPath,
       "photo_base64": photoBase64,
+      "photo_name": photoName
     }
     this.http.post(environment.serverURL+"/imgPro", body, httpOptions).subscribe(data => {
       console.log('##[TestimgPro]'+data);
      }, error => {
-      console.log('##[Error] postCreate : '+error);
+      console.log('##[Error] TestimgPro : '+JSON.stringify(error));
     });
   }
+
   postCreate(photoPath, photoBase64, photoName) {
     const httpOptions= { headers: this.headers};
     let body = {
