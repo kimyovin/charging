@@ -13,8 +13,9 @@ import { PhotoLibrary } from '@ionic-native/photo-library/ngx';
 })
 export class PhotoDetailPage implements OnInit{
   tags=[];
-  imgs=['assets/imgs/1.jpg', ];
+  imgs=[ ];
   date: any;
+  photo: any;
  //photo=null;
 
  // Imports the Google Cloud client library
@@ -30,12 +31,12 @@ export class PhotoDetailPage implements OnInit{
     public actionSheetController: ActionSheetController,
     private tagToServerController: TagToServerController,
     private photolibrary: PhotoLibrary,
-    //private activatedRoute:ActivatedRoute,
+    private activatedRoute:ActivatedRoute,
     ){
       this.tags=[
         "test1"
        ];
-       tagToServerController.postRead(this.imgs[0]).subscribe(items => {
+       tagToServerController.postRead(this.imgs[this.imgs.indexOf(this.photo)]).subscribe(items => {
         console.log("##subscribe 받음")
         const data = JSON.stringify(items)
         const json = JSON.parse(data)
@@ -70,7 +71,8 @@ export class PhotoDetailPage implements OnInit{
   }
     
   ngOnInit(){
-      //this.photo = this.activatedRoute.snapshot.paramMap.get('photo');
+      this.photo = this.activatedRoute.snapshot.paramMap.get('photo');
+
     }
     
   public tagBtnClick(){

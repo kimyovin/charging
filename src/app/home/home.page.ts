@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { TagToServerController }from'../http-controller/tagToServer'
 import { PhotoToServerController }from'../http-controller/photoToServer'
 import { FilePath } from '@ionic-native/file-path/ngx';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -26,8 +26,8 @@ export class HomePage {
      private http: HttpClient,
      private tagToServerController: TagToServerController,
      private photoToServerController: PhotoToServerController,
+     private router: Router,
 
-     private sanitizer: DomSanitizer,
      ){
       console.log('#home들어감');
       
@@ -37,16 +37,13 @@ export class HomePage {
             let library = JSON.stringify(alibrary);
             console.log('#[Library]a : '+library);
             
-            this.newimg.concat(JSON.parse(library)).forEach(item =>{
-              let path:string = item.library[0].id;
-              console.log('#path_item.id:'+path);
-              if (item.id.split(';').length > 0 && path !== undefined) {
-                console.log('#path is not undefined');
-                path= 'file://' + path.split(';')[1];
-              } else{ console.log('#path is undefined');}
-              this.imgs.push({image: path, like: null});
-              console.log('#newimg에서 path: '+ path);
-              
+            this.newimg.concat(JSON.parse(library)).forEach((item) =>{
+              item.library.forEach((photo, i)=>{
+                let path:string = 'file://'+ photo.id.split(';')[1];
+                console.log('#path_item.id:'+i+'번째, '+path);
+                this.imgs.push({image: path, like: null});
+                console.log('#newimg에서 path '+i+' : '+ path);
+              })
             })
 
             // this.printArray( this.imgs.concat(JSON.parse(library)));
@@ -84,45 +81,11 @@ export class HomePage {
           console.log('#ToServer_item: '+item.photo_path);
         });
       })
-
-    /***Using cordovaGallery plugin***/
-    //   cordovaGallery.load({ count: 20, }).then(items => {
-    //     items.forEach(item => {
-    //       this.imgs.push('file://'+item.thumbnail);
-    //       console.log('##item.thumbnail : '+item.thumbnail);
-          
-    //     });
-    // }).catch(e => console.error('#cordovaGallery Error'+e));
-    this.imgs.forEach(image=>{
-      console.log('#img: '+ image);
-    })
-  }
-  transform(url: string) {
-    if (url != null) {
-      return url.startsWith('cdvphotolibrary://') ? this.sanitizer.bypassSecurityTrustUrl(url) : url;
-    }
-  }
-
-  printArray(me)
-  {
-    console.log("#[Library] me: "+me);
-    console.log("#[Library] me.stringify: "+JSON.stringify(me));
-    me.forEach(function(libraryItem) {
-      console.log("#libraryItem.id: "+libraryItem.library[0].id);          // ID of the photo
-      console.log("#libraryItem.photoURL: "+libraryItem.library[0].photoURL);    // Cross-platform access to photo
-      console.log("#libraryItem.thumbnailURL: "+libraryItem.library[0].thumbnailURL);// Cross-platform access to thumbnail
-      console.log("#libraryItem.fileName: "+libraryItem.library[0].fileName);
-      console.log("#libraryItem.width: "+libraryItem.library[0].width);
-      console.log("#libraryItem.height: "+libraryItem.library[0].height);
-      console.log("#libraryItem.creationDate: "+libraryItem.library[0].creationDate);
-      console.log("#libraryItem.latitude: "+libraryItem.library[0].latitude);
-      console.log("#libraryItem.longitude: "+libraryItem.library[0].longitude);
-      console.log("#libraryItem.albumIds: "+libraryItem.library[0].albumIds);    // array of ids of appropriate AlbumItem, only of includeAlbumsData was used
-    });
+   
   }
 
   navigate(){  // 좋아하는 사진 페이지로 이동
-  //  this.navCtrl.navigateForward('/photo-like');
+    this.navCtrl.navigateForward('/photo-like');
   //     this.http.get('http://1.224.52.232:9010/tags?fn=r&photo_path=1.jpg').subscribe((response) => {
   //      console.log(response);
   //      const data = JSON.stringify(response);
@@ -132,8 +95,9 @@ export class HomePage {
   //     });
   }
 
-  gotoDetail(){
-    this.navCtrl.navigateForward('/photo-detail');
+  gotoDetail(image){
+    const imgPath = this.imgs[this.imgs.indexOf(image)].image;
+    this.router.navigate(['photo-detail', imgPath]);
   }
   
   gotoSearch(){ // 검색창 페이지로 이동
