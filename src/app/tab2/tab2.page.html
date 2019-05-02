@@ -1,12 +1,16 @@
 <ion-header>
     <!-- <img class="tBnt" src="assets/edit.png" (click)='edit_bnt()'>
     <img class="tBnt" style="float: right;" src="assets/search.png" (click)='edit_bnt()'> -->
-
-    <ion-toolbar [hidden]="hiddenFlag">
-      <ion-button fill="clear" (click)="edit_album()" >편집</ion-button>
-    <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>        
+    <ion-toolbar class="toolbar-1" [hidden]="hiddenFlag">
+        <ion-title>
+            <!-- <ion-icon name="heart-empty"class="heart-empty-icon" ion-button (click)="navigate()"></ion-icon> -->
+            <ion-button fill="clear" (click)="edit_album()" class="edit-button">편집</ion-button>
+            <img src="assets/icon/magnifying-glass.png" class="search-icon" (click)="gotoSearch()">
+            <!-- <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>         -->
+          </ion-title>
+             
   </ion-toolbar>
-  <ion-toolbar [hidden]="!hiddenFlag">
+  <ion-toolbar class="toolbar-1" [hidden]="!hiddenFlag">
     <ion-grid>
       <ion-row>
           <ion-button fill="clear" (click)="createNewFolder()">+</ion-button>

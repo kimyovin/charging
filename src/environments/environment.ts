@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   googleCloudVisionAPIKey: "AIzaSyDmeO2k8iemOJjv4hvA7gJMFKqbxSHfPoI",
-  serverURL: "http://192.168.1.39:9010",
+  serverURL: "http://1.224.52.232:9010",
 };
 
-/*
+/*bokyoung_0429:172.20.10.4
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
  *

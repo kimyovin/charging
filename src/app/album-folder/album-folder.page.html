@@ -3,12 +3,61 @@
     <ion-buttons slot="start">
       <ion-back-button (click)="backtoTab2()"></ion-back-button>
     </ion-buttons>
-    <ion-title class="name">앨범 이름</ion-title>
+    <ion-title class="name">{{folderName}}</ion-title>
     <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>
     <ion-icon name="heart-empty"class="heart-empty-icon" ion-button (click)="navigate()"></ion-icon>
-
   </ion-toolbar>
 </ion-header>
+
+<ion-content>
+  <div>
+    <ion-grid class="grid-category" >
+      <ion-row *ngFor="let img of imgs; index as i">
+        <ion-col col-3  *ngIf="i%4==0">
+            <img class="images" src="{{img}}"  (click)="gotoDetail(img)" >
+            <ion-icon *ngIf="img.like=='1' " name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="grid-category">
+        <ion-row *ngFor="let img of imgs; let i = index">
+            <ion-col  col-3  *ngIf="i%4 == 1">
+              <img class="images" src="{{img}}"  (click)="gotoDetail(img)" >
+              <ion-icon *ngIf="img.like==='1' " name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="grid-category">
+        <ion-row *ngFor="let img of imgs; let i = index">
+            <ion-col  col-3  *ngIf="i%4 == 2">
+              <img class="images" src="{{img}}" (click)="gotoDetail(img)" >
+              <ion-icon *ngIf="img.like==='1' " name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="grid-category">
+        <ion-row *ngFor="let img of imgs; let i = index">
+            <ion-col  col-3  *ngIf="i%4 == 3">
+              <img class="images" src="{{img}}" (click)="gotoDetail(img)" >
+              <ion-icon *ngIf="img.like === '1'" name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+            </ion-col>
+        </ion-row>
+    </ion-grid> 
+  </div>
+</ion-content>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <ion-content padding>
 

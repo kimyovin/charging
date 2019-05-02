@@ -27,21 +27,15 @@ export class PhotoToServerController {
     });
   }
 
-  postCreate(photoPath, photoBase64, photoName) {
+  postCreate(photoPath, photoName) {
     const httpOptions= { headers: this.headers};
     let body = {
       "fn": "create",
       "photo_path": photoPath,
-      "photo_base64": photoBase64,
       "photo_name": photoName
     }
     console.log('##Im in postCreate')
-    this.http.post(environment.serverURL+"/pphoto", body, httpOptions)
-      .subscribe(data => {
-        console.log(data['_body']);
-       }, error => {
-        console.log('##[Error] postCreate : '+error);
-      });
+    return this.http.post(environment.serverURL+"/pphoto", body, httpOptions)
   }
 
   postClickHeart(photoPath) {

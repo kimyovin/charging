@@ -56,31 +56,11 @@ export class FolderToServerController{
     }
 
     getReadOne(folderName){
-      const httpOptions={headers: this.headers};
-      let body={
-        "fn": "readone",
-        "folder_name": folderName,
-      };
-      this.http.post(environment.serverURL+"/gfolder", body, httpOptions)
-        .subscribe(data =>{
-          console.log(data['_body']);
-        }, error => {
-          console.log(error);
-        });
+      return this.http.get(environment.serverURL+"/gfolder?fn=readone&folder_name="+folderName)
     }
 
     getReadOneLike(folderName){
-      const httpOptions={headers: this.headers};
-      let body={
-        "fn": "readonelike",
-        "folder_name": folderName,
-      };
-      this.http.post(environment.serverURL+"/gfolder", body, httpOptions)
-        .subscribe(data =>{
-          console.log(data['_body']);
-        }, error => {
-          console.log(error);
-        });
+      return this.http.get(environment.serverURL+"/gfolder?fn=readonelike&folder_name="+folderName)
     }
 
 

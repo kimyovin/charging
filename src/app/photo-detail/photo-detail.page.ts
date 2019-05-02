@@ -6,6 +6,7 @@ import { TagToServerController }from'../http-controller/tagToServer'
 import { PhotoLibrary } from '@ionic-native/photo-library/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { File } from '@ionic-native/file/ngx';
+import {PhotoToServerController} from '../http-controller/photoToServer';
 
 @Component({
   selector: 'app-photo-detail',
@@ -16,7 +17,6 @@ export class PhotoDetailPage implements OnInit{
   tags=[];
   imgs=[];
   ParPhoto = null;
- //photo=null;
 
  // Imports the Google Cloud client library
 
@@ -25,7 +25,7 @@ export class PhotoDetailPage implements OnInit{
 
 // Performs label detection on the image file
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,    //의존성 주입에 대한 작업
     public alertController: AlertController,
     public appcomponent: AppComponent,
     public actionSheetController: ActionSheetController,
@@ -33,18 +33,20 @@ export class PhotoDetailPage implements OnInit{
     private photolibrary: PhotoLibrary,
     private activatedRoute:ActivatedRoute,
     private socialSharing: SocialSharing,
-    private file: File
+    private file: File,
+    private photoToServerController: PhotoToServerController,
     ){
     }
     
-  ngOnInit(){
+  ngOnInit(){ //변수 초기화 작업
     console.log('#im in ngOnInit')
       this.ParPhoto = JSON.parse(this.activatedRoute.snapshot.paramMap.get('photo'));
+      console.log('##ParPhoto: '+ JSON.stringify(this.ParPhoto))
       // this.imgs.push(this.ParPhoto);
       this.tagToServerController.postRead(this.ParPhoto.image).subscribe(items => {
-        console.log("##PHOTO-DETAIL: subscribe 받음")
-        const data = JSON.stringify(items)
-        const json = JSON.parse(data)
+        console.log("##PHOTO-DETAIL: tag postRead 받음:"+items)
+        const data = JSON.stringify(items)  
+        const json = JSON.parse(data)   //0430- JSON.parse(JSON.stringify(items))
         json.forEach(item => {
           this.tags.push(item.tag_name);
           console.log('#[PHOTO-DETAIL]ToServer_item.tag_name: '+item.tag_name);
@@ -68,6 +70,23 @@ export class PhotoDetailPage implements OnInit{
     this.hiddenFlag=false;
   }
 
+  changeLike(selectedImg){  //like: postClickHeart, unlike: postCancelHeart 
+    if(this.ParPhoto.like == 1)
+      this.photoToServerController.postCancelHeart(this.ParPhoto.image).subscribe(data => {
+        console.log('#HEart-Empty : '+data);
+      }, error => {
+        console.log('#PostCancleHeart Error: '+error);
+      });
+    else
+      this.photoToServerController.postClickHeart(this.ParPhoto.image).subscribe(data => {
+        console.log('#Heart: '+data);
+       }, error => {
+        console.log('#PostClickHeart Error: '+error);
+      });
+    
+    this.ParPhoto.like = (this.ParPhoto.like=='1')?null:'1';
+  }
+
   //React to click Tag Button; delete tag()은 여기서 끝
   async tagModifyBtnClick(oldtagId: any){
     const actionSheet = await this.actionSheetController.create({
@@ -86,7 +105,7 @@ export class PhotoDetailPage implements OnInit{
           //직접 태그 눌러서 삭제하기 기능
           console.log('oldtagID: '+oldtagId);
           this.tags.splice(this.tags.indexOf(oldtagId), 1);
-          this.tagToServerController.postDel(this.ParPhoto, oldtagId).subscribe(data => {
+          this.tagToServerController.postDel(this.ParPhoto.image, oldtagId).subscribe(data => {
             console.log('#[PHOTO-DETAIL] postDel response :'+data['_body']);
            }, error => {
             console.log(error);
@@ -105,7 +124,6 @@ export class PhotoDetailPage implements OnInit{
     await actionSheet.present();
   }
   
-
   //Modify tag
   async presentAlertPromptModify(oldtagId:any) { 
     const alertModify = await this.alertController.create({
@@ -130,7 +148,7 @@ export class PhotoDetailPage implements OnInit{
           handler: data => {
             console.log('Modify tag: '+ document.getElementById("oldtag{{tags.indexOf(item)}}") +' => '+ data.newtag);
             this.tags.splice(this.tags.indexOf(oldtagId), 1, data.newtag);
-            this.tagToServerController.postUp(this.ParPhoto, oldtagId, data.newtag).subscribe(data => {
+            this.tagToServerController.postUp(this.ParPhoto.image, oldtagId, data.newtag).subscribe(data => {
               console.log('#[PHOTO-DETAIL] postUp response :'+data['_body']);
              }, error => {
               console.log(error);
@@ -167,7 +185,7 @@ export class PhotoDetailPage implements OnInit{
           handler: data => {
             console.log('Add newtag:'+data.newtag);
             this.tags.push(data.newtag);
-            this.tagToServerController.postCreate(this.ParPhoto, data.newtag).subscribe(data => {
+            this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag).subscribe(data => {
               console.log('#[PHOTO-DETAIL] postCreate response :'+ data['_body']);
              }, error => {
               console.log(error);
@@ -213,25 +231,13 @@ export class PhotoDetailPage implements OnInit{
     await actionSheet.present();
 
   }
-
-  async resolveLocalFile() {
-    return this.file.copyFile(`${this.file.applicationDirectory}assets/imgs/`, '4.jpg',
-    this.file.cacheDirectory, `${new Date().getTime()}.jpg`);
-  }
-
-  removeTempFile(name) {
-    this.file.removeFile(this.file.cacheDirectory, name);
-  }
-
   async shareOnlyImage() {
-    // tslint:disable-next-line:prefer-const
-    let file = await this.resolveLocalFile();
-
-    this.socialSharing.share(null, null, file.nativeURL, null)
+    console.log("#Im in shareOnlyImage()");
+    this.socialSharing.share(null, null, this.ParPhoto.image, null)
     .then((entries) => {
-      this.removeTempFile(file.name);
+      console.log('#success sharing')
     }).catch((e) => {
-      // Error!
+      console.log("##SocialSharing_Error: "+e);
     });
 
   }

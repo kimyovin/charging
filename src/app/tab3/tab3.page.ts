@@ -18,8 +18,8 @@ export class Tab3Page implements OnInit {
       console.log('TAB3 들어옴')
       tagfolderToServerController.getRead()
       .subscribe(items => {
-        console.log("##[Tab3]subscribe 받음")
         const data = JSON.stringify(items)
+        console.log("##[Tab3]subscribe 받음: "+data)
         const json = JSON.parse(data)
         json.forEach(item => {
           this.tagfolders.push({tagName: item.tag_name, mainPhotoPath: item.photo_path_t});
@@ -29,6 +29,7 @@ export class Tab3Page implements OnInit {
     }
 
   ngOnInit() {
+    console.log('#hihi im ngOninit')
   }
 
   gotoSearch(){ // 검색창 페이지로 이동

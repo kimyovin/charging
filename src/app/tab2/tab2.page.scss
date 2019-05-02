@@ -1,3 +1,6 @@
+.toolbar-1{
+    height: 45px;
+}
 .tBnt {
     padding: o;
     width: 30px;
@@ -6,16 +9,18 @@
 ion-col{
     text-align: center;
 }
-
+.edit-button{
+    height: 30px;
+    margin-bottom: 5px;
+}
 .search-icon {
     width: 30px;
     height: 30px;
     float: right;
-    margin: 6px;
-  }
-  .grid-category{
-    float: left;
-    width: 50%;
-  }
- .thumb{
- }
+    margin-bottom: 5px;
+}
+
+.grid-category{
+   float: left;
+   width: 50%;
+}

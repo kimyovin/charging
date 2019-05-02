@@ -27,28 +27,26 @@ export class Tab2Page implements OnInit {
     private filePath: FilePath,
     private folderToServerController: FolderToServerController,
     ) {
-
       this.folders=[
         {folderName: 'travel', image:'assets/image/img1.jpg'},
         {folderName: 'study', image:'assets/image/img2.jpg'},
         {folderName: 'friends', image:'assets/image/img3.jpg'},
       ]
       this.example = [];
-
-      folderToServerController.getRead().subscribe(data => {
-        console.log("##[FoldergetRead]subscribe 받음: "+data)
-        const json = JSON.stringify(data)
-        const items = JSON.parse(json)
-        items.forEach(item => {
-          this.folders.push({ folderName: item.folder_name, image: item.main_photo});
-          console.log('#[FoldergetRead]ToServer| item.folder_name: '+item.folder_name+' /item.main_photo: '+item.main_photo);
-        });
-      }, error => {
-        console.log(error);
-      })
    }
 
   ngOnInit() {
+    this.folderToServerController.getRead().subscribe(data => {
+      console.log("##[FoldergetRead]subscribe 받음: "+data)
+      const json = JSON.stringify(data)
+      const items = JSON.parse(json)
+      items.forEach(item => {
+        this.folders.push({ folderName: item.folder_name, image: item.main_photo});
+        console.log('#[FoldergetRead]ToServer| item.folder_name: '+item.folder_name+' /item.main_photo: '+item.main_photo);
+      });
+    }, error => {
+      console.log(error);
+    })
   }
 
   edit_album() {
@@ -66,24 +64,24 @@ export class Tab2Page implements OnInit {
     this.hiddenFlag=false;
   }
 
-  gotoSearch(){ // 검색창 페이지로 이동
+  gotoSearch(){ // 검색창 페이지로 이동 
     this.navCtrl.navigateForward('/search');
   }
 
-  gotoFolder(){ 
-    this.navCtrl.navigateForward('/album-folder');
+  gotoFolder(folderName){
+    console.log("#folderName: "+ folderName)
+    this.router.navigate(['album-folder', folderName]);
   }
 
-  navigate(){
-    this.router.navigateByUrl('/album-folder')
-  }
+  // navigate(){
+  //   this.router.navigateByUrl('/album-folder')
+  // }
 
   //Plus new Folder
  newAddimage: string;
  newName: string;
  async createNewFolder(){
     this.presentToast("앨범의 대표 사진을 선택해주세요");
-
     this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
     this.presentAlertPromptAdd();
     
@@ -106,7 +104,7 @@ takePicture(sourceType: PictureSourceType) {
                      let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
                     
                      this.newAddimage = correctPath+currentName;
-                     console.log('### CorrectPath : '+this.newAddimage);   
+                     console.log('### CorrectPath: '+correctPath+' / currentName: '+currentName );   
 
                  //   this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
                 });
@@ -140,6 +138,12 @@ takePicture(sourceType: PictureSourceType) {
           }, error => {
             console.log(error);
           });
+        }
+      },
+      {
+        text: '진입하기',
+        handler: ()=> {
+          this.gotoFolder(oldFolder.folderName)
         }
       },
     {
