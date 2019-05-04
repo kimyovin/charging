@@ -23,6 +23,7 @@ export class AlbumFolderLikePage implements OnInit {
     this.folderName = this.activatedRouter.snapshot.paramMap.get('folder');
     console.log('#In album-folder-like folderName: '+ this.folderName);
     this.folderToServerContoller.getReadOneLike(this.folderName).subscribe(data => {
+      console.log('#album-folder-like_getREadOneLike: '+ JSON.stringify(data))
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item =>
         this.imgs.push(item.photo_path)

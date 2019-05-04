@@ -64,4 +64,8 @@ export class PhotoToServerController {
     console.log('##Im in getRead')
     return this.http.get(environment.serverURL+'/gphoto?fn=read');
   }
+
+  getReadLike(){
+    return this.http.get(environment.serverURL+'/gphoto?fn=readlike');
+  }
 }

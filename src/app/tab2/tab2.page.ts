@@ -80,6 +80,7 @@ export class Tab2Page implements OnInit {
   //Plus new Folder
  newAddimage: string;
  newName: string;
+ currentName: string;
  async createNewFolder(){
     this.presentToast("앨범의 대표 사진을 선택해주세요");
     this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
@@ -101,10 +102,10 @@ takePicture(sourceType: PictureSourceType) {
             this.filePath.resolveNativePath(imagePath)
                 .then(filePath => {
                      let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                     let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+                     this.currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
                     
-                     this.newAddimage = correctPath+currentName;
-                     console.log('### CorrectPath: '+correctPath+' / currentName: '+currentName );   
+                     this.newAddimage = correctPath+ this.currentName;
+                     console.log('### CorrectPath: '+correctPath+' / currentName: '+ this.currentName );   
 
                  //   this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
                 });
@@ -221,9 +222,9 @@ takePicture(sourceType: PictureSourceType) {
             console.log('Add newFolder:' + data.newFolder);
             this.newName = data.newFolder;
             this.folders.push({folderName: this.newName, image: this.newAddimage});
-            console.log("##NewName : "+this.newName + " || NewAddimage : "+ this.newAddimage);
-            this.folderToServerController.postCreate(this.newName, this.newAddimage, this.newAddimage).subscribe(data =>{
-              console.log(data['_body']);
+            console.log("##NewName : "+this.newName + " || currentName : "+ this.currentName);
+            this.folderToServerController.postCreate(this.newName, this.currentName, this.currentName).subscribe(data =>{
+              console.log(data);
             }, error => {
               console.log(error);
             });

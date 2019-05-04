@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router'
+import {Router, ActivatedRoute} from '@angular/router'
 import { NavController } from '@ionic/angular';
+import { TagfolderToServerController } from '../http-controller/tagfolderToServer'
 
 @Component({
   selector: 'app-tag-folder',
@@ -8,9 +9,32 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./tag-folder.page.scss'],
 })
 export class TagFolderPage implements OnInit {
+  imgs=[];
+  tagName;
+  constructor(private router:Router, public navCtrl:NavController,
+    private tagfolderToServerController: TagfolderToServerController,
+    private activatedRoute: ActivatedRoute,
+    ) { }
 
-  constructor(private router:Router, public navCtrl:NavController) { }
+  ngOnInit() {
+    this.tagName = JSON.parse(this.activatedRoute.snapshot.paramMap.get('tagName'));
+    console.log('#tag-folder: '+this.tagName)
+    this.tagfolderToServerController.getReadOne(this.tagName).subscribe(data => {
+      console.log("#tag-folder_getreadone: "+JSON.stringify(data))
+      let items = JSON.parse(JSON.stringify(data));
+      items.forEach(item => {
+        this.imgs.push({image: item.photo_path_t, like:item.photo_like, creationDate: item.photo_name});
+      })
+    })
+  }
 
+  getReadOne(){
+    // this.tagfolderToServerController.getReadOne()
+  }
+  gotoTagFolderLike(){
+    let tagNameObject = JSON.stringify(this.tagName)
+    this.router.navigate(['tag-folder-like', tagNameObject]);
+  }
   backtoTab3(){
     this.router.navigateByUrl('/tabs/tab3')
   }
@@ -18,7 +42,5 @@ export class TagFolderPage implements OnInit {
     this.navCtrl.navigateForward('/search');
   }
 
-  ngOnInit() {
-  }
-
+ 
 }

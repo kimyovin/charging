@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-import { routerNgProbeToken } from '@angular/router/src/router_module';
 import { NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { PhotoToServerController } from '../http-controller/photoToServer'
 
 @Component({
   selector: 'app-photo-like',
@@ -9,8 +9,31 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./photo-like.page.scss'],
 })
 export class PhotoLikePage implements OnInit {
+  imgs=[{image: 'assets/imgs/1.jpg', creationDate:'010101'}];
+  constructor(public navCtrl:NavController,
+    private photoToServerController: PhotoToServerController,
+    private router: Router,
+    ) { }
 
-  constructor(public navCtrl:NavController) { }
+  ngOnInit() {
+    this.getReadLike();
+  }
+
+  getReadLike(){
+    this.photoToServerController.getReadLike().subscribe(data => {
+      console.log('#PHOTO-LIKE: '+ JSON.stringify(data))
+      let items = JSON.parse(JSON.stringify(data));
+      items.forEach(item => {
+        this.imgs.push({image: item.photo_path, creationDate: item.photo_name});
+      })
+    })
+  }
+
+  gotoDetail(image){
+    const imgObject = JSON.stringify(this.imgs[this.imgs.indexOf(image)]);
+    this.router.navigate(['photo-detail', imgObject]);
+  }
+  
 
   gotoSearch(){
     this.navCtrl.navigateForward('/search');
@@ -20,12 +43,10 @@ export class PhotoLikePage implements OnInit {
     this.goBack();
     this.navCtrl.navigateRoot('/tabs');
   }
+
   goBack(){
     this.navCtrl.pop();
-
   }
 
-  ngOnInit() {
-  }
-
+  
 }

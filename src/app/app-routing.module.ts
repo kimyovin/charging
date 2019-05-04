@@ -12,8 +12,8 @@ const routes: Routes = [
   { path: 'photo-detail/:photo', loadChildren: './photo-detail/photo-detail.module#PhotoDetailPageModule' },
   { path: 'photo-like', loadChildren: './photo-like/photo-like.module#PhotoLikePageModule' },
   { path: 'search', loadChildren: './search/search.module#SearchPageModule' },
-  { path: 'tag-folder', loadChildren: './tag-folder/tag-folder.module#TagFolderPageModule' },
-  { path: 'tag-folder-like', loadChildren: './tag-folder-like/tag-folder-like.module#TagFolderLikePageModule' },
+  { path: 'tag-folder/:tagName', loadChildren: './tag-folder/tag-folder.module#TagFolderPageModule' },
+  { path: 'tag-folder-like/:tagName', loadChildren: './tag-folder-like/tag-folder-like.module#TagFolderLikePageModule' },
  
 ];
 

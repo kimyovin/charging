@@ -37,8 +37,9 @@ export class Tab3Page implements OnInit {
   }
 
 
-  gotoTagFolder(){ 
-    this.navCtrl.navigateForward('/tag-folder');
+  gotoTagFolder(selectedTag){
+    let selectedTagObject = JSON.stringify(selectedTag);
+    this.router.navigate(['tag-folder', selectedTagObject])
   }
 
   navigate(){

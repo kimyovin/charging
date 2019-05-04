@@ -16,9 +16,9 @@
     <ion-row *ngFor="let folder of tagfolders; index as i">
       <ion-col col-3  *ngIf="i%2==0">
         <div>
-          <img class="thumb" src="{{folder.mainPhotoPath}}" (click)="folderModifyBtnClick(folder)">
+          <img class="thumb" src="{{folder.mainPhotoPath}}" (click)="gotoTagFolder(folder.tagName)">
           <br>
-          <label (click)="folderModifyBtnClick(folder)">{{folder.tagName}}</label>
+          <label (click)="gotoTagFolder(folder.tagName)">{{folder.tagName}}</label>
       </div>
       </ion-col>
     </ion-row>
@@ -27,9 +27,9 @@
     <ion-row *ngFor="let folder of tagfolders; index as i">
       <ion-col col-3  *ngIf="i%2 !=0">
         <div>
-          <img class="thumb" src="{{folder.mainPhotoPath}}" (click)="folderModifyBtnClick(folder)">
+          <img class="thumb" src="{{folder.mainPhotoPath}}" (click)="gotoTagFolder(folder.tagName)">
           <br>
-          <label (click)="folderModifyBtnClick(folder)">{{folder.tagName}}</label>
+          <label (click)="gotoTagFolder(folder.tagName)">{{folder.tagName}}</label>
       </div>
       </ion-col>
     </ion-row>

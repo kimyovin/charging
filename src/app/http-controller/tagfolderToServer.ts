@@ -16,30 +16,10 @@ export class TagfolderToServerController{
     }
 
     getReadOne(tagName){
-        const httpOptions= {headers: this.headers}
-        let body={
-          "fn": "readone",
-          "tag_name": tagName
-        }
-        this.http.post(environment.serverURL+"/gtagFol", body, httpOptions)
-          .subscribe(data =>{
-            console.log(data['_body']);
-          }, error => {
-            console.log(error);
-          });
+        return this.http.get(environment.serverURL+"/gtagFol?fn=readone&tag_name="+tagName);
     }
 
     getReadOneLike(tagName){
-        const httpOptions= {headers: this.headers}
-        let body={
-          "fn": "readonelike",
-          "tag_name": tagName
-        }
-        this.http.post(environment.serverURL+"/gtagFol", body, httpOptions)
-          .subscribe(data =>{
-            console.log(data['_body']);
-          }, error => {
-            console.log(error);
-          });
+        return this.http.get(environment.serverURL+"/gtagFol?fn=readonelike&tag_name="+tagName)
     }
 }
