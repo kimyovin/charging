@@ -4,9 +4,6 @@
 // ion-title{
 //     background-color: #f9f9f9;
 // }
-// toolbar{
-//     padding: 0%;
-// } 
 
 .backButton {
     width: 30px;
@@ -15,13 +12,14 @@
     margin-bottom: 5px;
     
   }
-.headPhotoInfo{             
-    text-align: center;
-    align-items: center;
+.headPhotoInfo{  
+    float: center;    
+    // text-align: center;
+    // align-items: center;
 
     // vertical-align: middle;
     // margin-right: auto;
-    // margin-left: auto;
+    margin-left: 30%;
 }
 .edit_button{
     float:right;

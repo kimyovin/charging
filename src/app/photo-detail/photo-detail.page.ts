@@ -15,6 +15,7 @@ import {PhotoToServerController} from '../http-controller/photoToServer';
 })
 export class PhotoDetailPage implements OnInit{
   tags=[];
+  text=[];
   imgs=[];
   ParPhoto = null;
 
@@ -48,7 +49,10 @@ export class PhotoDetailPage implements OnInit{
         const data = JSON.stringify(items)  
         const json = JSON.parse(data)   //0430- JSON.parse(JSON.stringify(items))
         json.forEach(item => {
-          this.tags.push(item.tag_name);
+          if(item.t_flag == 0)
+            this.tags.push(item.tag_name);
+          else
+            this.text.push(item.tag_name);
           console.log('#[PHOTO-DETAIL]ToServer_item.tag_name: '+item.tag_name);
         });
       })
@@ -94,7 +98,6 @@ export class PhotoDetailPage implements OnInit{
         text : '수정하기',
         handler: () => {
           console.log('수정하기 clicked');
-
           this.presentAlertPromptModify(oldtagId);
         }
       },
@@ -103,13 +106,24 @@ export class PhotoDetailPage implements OnInit{
         handler: () => {
           console.log('삭제하기 clicked');
           //직접 태그 눌러서 삭제하기 기능
-          console.log('oldtagID: '+oldtagId);
-          this.tags.splice(this.tags.indexOf(oldtagId), 1);
-          this.tagToServerController.postDel(this.ParPhoto.image, oldtagId).subscribe(data => {
-            console.log('#[PHOTO-DETAIL] postDel response :'+data['_body']);
-           }, error => {
-            console.log(error);
-          });
+          console.log('oldtagID: '+oldtagId); 
+          if(this.tags.indexOf(oldtagId) != -1){  //tag 삭제
+            this.tags.splice(this.tags.indexOf(oldtagId), 1);
+            this.tagToServerController.postDel(this.ParPhoto.image, oldtagId).subscribe(data => {
+              console.log('#[PHOTO-DETAIL] postDel response :'+data['_body']);
+            }, error => {
+              console.log(error);
+            });
+          }
+          else{ //text 삭제
+            this.text.splice(this.text.indexOf(oldtagId), 1);
+            this.tagToServerController.postDel(this.ParPhoto.image, oldtagId).subscribe(data => {
+              console.log('#[PHOTO-DETAIL] postDel response :'+data['_body']);
+            }, error => {
+              console.log(error);
+            });
+          }
+          
         }
       },
     {
@@ -146,14 +160,24 @@ export class PhotoDetailPage implements OnInit{
         {
           text: '완료',
           handler: data => {
-            console.log('Modify tag: '+ document.getElementById("oldtag{{tags.indexOf(item)}}") +' => '+ data.newtag);
-            this.tags.splice(this.tags.indexOf(oldtagId), 1, data.newtag);
-            this.tagToServerController.postUp(this.ParPhoto.image, oldtagId, data.newtag).subscribe(data => {
-              console.log('#[PHOTO-DETAIL] postUp response :'+data['_body']);
-             }, error => {
-              console.log(error);
-            });
-            
+            if(this.tags.indexOf(oldtagId) != -1){  //tag 수정
+              console.log('Modify tag: '+ document.getElementById("oldtag{{tags.indexOf(item)}}") +' => '+ data.newtag);
+              this.tags.splice(this.tags.indexOf(oldtagId), 1, data.newtag);
+              this.tagToServerController.postUp(this.ParPhoto.image, oldtagId, data.newtag).subscribe(data => {
+                console.log('#[PHOTO-DETAIL] postUp response :'+data['_body']);
+               }, error => {
+                console.log(error);
+              });
+            }
+            else{ //text 수정
+              console.log('Modify tag: '+ document.getElementById("oldtag{{text.indexOf(item)}}") +' => '+ data.newtag);
+              this.text.splice(this.text.indexOf(oldtagId), 1, data.newtag);
+              this.tagToServerController.postUp(this.ParPhoto.image, oldtagId, data.newtag).subscribe(data => {
+                console.log('#[PHOTO-DETAIL] postUp response :'+data['_body']);
+               }, error => {
+                console.log(error);
+              });
+            }
         }
         }
       ],
@@ -163,7 +187,7 @@ export class PhotoDetailPage implements OnInit{
   }
 
    //Add Tag
-   async presentAlertPromptAdd() {
+   async presentAlertPromptAdd(flag) {
     const alertModify = await this.alertController.create({
       header: '새로운 태그 입력',
       inputs: [
@@ -184,14 +208,25 @@ export class PhotoDetailPage implements OnInit{
           text: '완료',
           handler: data => {
             console.log('Add newtag:'+data.newtag);
-            this.tags.push(data.newtag);
-            this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag).subscribe(data => {
-              console.log('#[PHOTO-DETAIL] postCreate response :'+ data['_body']);
-             }, error => {
-              console.log(error);
-            });
-
-            console.log('Tag Upload Success !!');
+            if(flag == '0'){
+              this.tags.push(data.newtag);
+              this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag, flag).subscribe(data => {
+                console.log('#[PHOTO-DETAIL] postCreate response :'+ JSON.stringify(data));
+               }, error => {
+                console.log(error);
+              });
+              console.log('Tag Upload Success !!');
+            }
+            else{
+              this.tags.push(data.newtag);
+              this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag, flag).subscribe(data => {
+                console.log('#[PHOTO-DETAIL] postCreate response :'+ JSON.stringify(data));
+               }, error => {
+                console.log(error);
+              });
+              console.log('Text Upload Success !!');
+            }
+            
         }
         }
       ],

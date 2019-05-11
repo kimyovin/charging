@@ -14,14 +14,15 @@ export class TagToServerController {
     this.headers.append('Content-Type', 'application/json' );
   }
 
-  postCreate(photoPath, tagName) {
+  postCreate(photoPath, tagName, flag) {
 
     const httpOptions= { headers: this.headers};
 
     let postData = {
       "fn":"create",
       "photo_path": photoPath,
-      "tag_name": tagName
+      "tag_name": tagName,
+      "t_flag": flag
     }
     console.log('##Im in postCreate, photoPath:'+ photoPath+' /tagName: '+tagName)
     return this.http.post(environment.serverURL+"/ptag", postData, httpOptions);

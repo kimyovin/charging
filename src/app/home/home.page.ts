@@ -5,11 +5,14 @@ import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { HttpClient } from '@angular/common/http';
 import { TagToServerController }from'../http-controller/tagToServer'
 import { PhotoToServerController }from'../http-controller/photoToServer'
+import { GoogleVisionApiProvider }from '../http-controller/google-vision-api'
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { Router } from '@angular/router';
 import { resolve } from 'url';
 import { reject, async } from 'q';
 import { JsonPipe } from '@angular/common';
+import { parse } from 'querystring';
+import { TestingCompilerFactory } from '@angular/core/testing/src/test_compiler';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +22,7 @@ import { JsonPipe } from '@angular/common';
 
 export class HomePage implements OnInit{
   imgs=[
+   
   ];  //html에 보여지는 photo array
   
 
@@ -30,6 +34,7 @@ export class HomePage implements OnInit{
      private tagToServerController: TagToServerController,
      private photoToServerController: PhotoToServerController,
      private router: Router,
+     private googleVisionApiProvider: GoogleVisionApiProvider,
 
      ){
       console.log('#home들어감');
@@ -37,47 +42,46 @@ export class HomePage implements OnInit{
 
   ngOnInit(){
     console.log("I'm in Home ngOninit()");
-    this.getLocalphoto().then(items =>{
-      console.log("#getLocalphoto[1]: "+items)
-      console.log("#getLocalphoto[2]: "+JSON.stringify(items))
-      JSON.parse(JSON.stringify(items)).forEach(item => {
-        console.log('#getLocalphoto:'+item.path);
-        this.encodeBase64ImageTagviaCanvas(item.path).then( base64 =>{
-          this.photoToServerController.testimgPro(item.path, base64, item.date);
-        })
-      })
-    });
-    this.getRead();
-  }
 
-  getLocalphoto(){
-    return new Promise((resolve, reject)=> {
-      //Get Local imagesr
-      this.photoLibrary.getLibrary().subscribe({
-        next: (alibrary) => {
-          let imgs_0=[];  //처음 DB로 들어가는 photo array
-          let newimg=[];  //library가 담길 곳.
-          let library = JSON.stringify(alibrary);
-          newimg.concat(JSON.parse(library)).forEach((item) =>{
-            item.library.forEach((photo)=>{
-              let path: string = 'file://'+ photo.id.split(';')[1];
-              let date = photo.creationDate.split('T')[0];
-              this.photoToServerController.postCreate(path, date).subscribe(data => {
+    this.photoLibrary.getLibrary().subscribe({  //getLocalphoto
+      next: (alibrary) => {
+        let imgs_0=[{path: 'assets/imgs/1.jpg', date: '2019-05-17'}];  //처음 DB로 들어가는 photo array
+        let newimg=[];  //library가 담길 곳.
+        let library = JSON.stringify(alibrary);
+        newimg.concat(JSON.parse(library)).forEach((item) =>{
+          item.library.forEach((photo)=>{
+            let path: string = 'file://'+ photo.id.split(';')[1];
+            let date = photo.creationDate.split('T')[0];
+
+            this.imgs.push({image: path, like: 0, creationDate: date});
+
+            this.photoToServerController.postCreate(path, date).subscribe(data => {
+              if(JSON.stringify(data) =='"SUCCESS"'){
                 console.log("##[postCreate in home]: "+JSON.stringify(data));
-                JSON.parse(JSON.stringify(data)).forEach(item => {
-                imgs_0.push({path: item.photo_path, date: date});
-                })
-              }, error => {
-                console.log("##[postCreate in home Error]: "+JSON.stringify(error));
-              })
-            })
-           
-            resolve(imgs_0)
+                this.encodeBase64ImageTagviaCanvas(path).then(base64=> {
+                  this.googleVisionApiProvider.postGoogleVisionApi(base64).subscribe(data=>{
+                    console.log('#GoogleVisionApiProvider: '+ JSON.stringify(data))
+                    let parse_data = JSON.parse(JSON.stringify(data));
+                    this.photoToServerController.testimgPro(path, parse_data);
+                  }, err => {
+                    console.log('#GoogleVisionApiProvider_Error: '+ JSON.stringify(err))
+                  })
+                });
+              }
+              else if(JSON.stringify(data) != null){
+                console.log('#data is null')
+              }
+
+            }, error => {
+              console.log("##[postCreate in home Error]: "+JSON.stringify(error));
+            });
           })
-        }
-      })
-   })
-   
+        });
+        console.log('#imgs_0들어갈거임')
+      }
+    });
+
+    this.getRead();
   }
 
   getRead(){
@@ -87,7 +91,7 @@ export class HomePage implements OnInit{
       const items = JSON.parse(json)
       items.forEach(item => {
         console.log('#ToServer_item: '+item.PHOTO_PATH+' /like: '+item.photo_like+' /date: '+item.photo_name);
-        this.imgs.push({image: item.PHOTO_PATH, like: item.PHOTO_LIKE, creationDate: item.PHOTO_NAME});
+        this.imgs[this.imgs.indexOf(item.PHOTO_PATH)].like='1';
         
       });
     })
@@ -105,6 +109,31 @@ export class HomePage implements OnInit{
   }
 
   gotoDetail(image){
+    this.encodeBase64ImageTagviaCanvas(image.image).then( base64=>{
+      console.log('#base64: '+base64);
+      this.googleVisionApiProvider.postGoogleVisionApi(base64).subscribe(data=>{
+        console.log('#GoogleVisionApiProvider: '+ JSON.stringify(data))
+        let parse_data = JSON.parse(JSON.stringify(data));
+        this.photoToServerController.testimgPro(image.image, parse_data)
+        // 여기가 메인 파싱 코드!!!
+      for (let i=0; i<parse_data.responses[0].labelAnnotations.length; i++){
+          if(parse_data.responses[0].labelAnnotations[i].score > 0.7)  // 정확도 70퍼센트 이상일 때 출력함
+          {
+            console.log('#GoogleVisionApi: '+parse_data.responses[0].labelAnnotations[i].description);
+          }
+        }
+      if(JSON.stringify(parse_data.responses[0]).includes('logoAnnotations'))
+        console.log('#LogoAnnotations: '+parse_data.responses[0].logoAnnotations[0].description);
+      if(JSON.stringify(parse_data.responses[0]).includes('landmarkAnnotations'))
+        console.log('#LandmarkAnnotations: '+parse_data.responses[0].landmarkAnnotations[0].description);
+      
+      if( JSON.stringify(parse_data.responses[0]).includes('textAnnotations'))
+          console.log('#TextAnnotation: '+parse_data.responses[0].textAnnotations[0].description);
+      }, err => {
+        console.log('#GoogleVisionApiProvider_Error: '+ JSON.stringify(err))
+      });
+    })
+    
     const imgObject = JSON.stringify(this.imgs[this.imgs.indexOf(image)]);
     this.router.navigate(['photo-detail', imgObject]);
   }
@@ -114,16 +143,15 @@ export class HomePage implements OnInit{
   }
 
   changeLike(selectedImg){  //like: postClickHeart, unlike: postCancelHeart 
-    let postPath= selectedImg.image.replace('file://', '');
-    console.log("postPath: "+ postPath+" | selectedImg.like: "+selectedImg.like);
+    console.log("selectedImg.image: "+ selectedImg.image+" | selectedImg.like: "+selectedImg.like);
     if(selectedImg.like == 1)
-      this.photoToServerController.postCancelHeart(postPath).subscribe(data => {
+      this.photoToServerController.postCancelHeart(selectedImg.image).subscribe(data => {
         console.log('#HEart-Empty : '+data);
       }, error => {
         console.log('#PostCancleHeart Error: '+error);
       });
     else
-      this.photoToServerController.postClickHeart(postPath).subscribe(data => {
+      this.photoToServerController.postClickHeart(selectedImg.image).subscribe(data => {
         console.log('#Heart: '+data);
        }, error => {
         console.log('#PostClickHeart Error: '+error);
@@ -146,9 +174,9 @@ export class HomePage implements OnInit{
         let uri: string = canvas.toDataURL("image/jpeg");
 
         console.log("uri: "+uri);
-        // uri.replace("data:image/jpeg;base64,", "");
+        uri.split(',')[1];
         console.log("#uri: "+uri);
-        resolve(uri);
+        resolve(uri.split(',')[1]);
       }
      image.src = url;
     })

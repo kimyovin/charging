@@ -25,16 +25,20 @@
     margin:2px;
   }
   .grid-category{
+    align-content: center;
+    overflow: hidden;
     float: left;
-    width: 25%;
+    width:25%;
   }
-  
+
   .images{
     border-radius: 5px;
   }
   .heart-on-image{
+    width: 13px;
     position: relative;
     float:right;
     top:-20px;
     left:-5px;
   }
+  

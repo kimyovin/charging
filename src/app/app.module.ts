@@ -19,7 +19,7 @@ import { PhotoToServerController} from './http-controller/photoToServer';
 import { FolderToServerController } from './http-controller/folderToServer';
 import { TagfolderToServerController } from './http-controller/tagfolderToServer';
 import { SearchResultToServerController} from './http-controller/searchresultToServer';
-
+import { GoogleVisionApiProvider } from './http-controller/google-vision-api';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { File } from '@ionic-native/file/ngx';
 
@@ -40,6 +40,7 @@ import { File } from '@ionic-native/file/ngx';
     FolderToServerController,
     TagfolderToServerController,
     SearchResultToServerController,
+    GoogleVisionApiProvider,
   ],
     
   bootstrap: [AppComponent]

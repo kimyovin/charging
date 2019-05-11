@@ -6,40 +6,44 @@
         <img src="assets/icon/magnifying-glass.png" class="search-icon" (click)="gotoSearch()">
         <!-- <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>         -->
       </ion-title>
-      </ion-toolbar>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div>
     <ion-grid class="grid-category" >
-      <ion-row *ngFor="let img of imgs; index as i">
-        <ion-col col-3  *ngIf="i%4==0">
+      <ion-row *ngFor="let img of imgs; index as i" >
+        <ion-col col-3  *ngIf="i%4==0"class="grid-test">
             <img class="images" src="{{img.image}}"  (click)="gotoDetail(img)" >
-            <ion-icon *ngIf="img.like=='1'" name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+            <img *ngIf="img.like=='1'" src="assets/icon/like-home.png" class="heart-on-image" (click)="changeLike(img)">
+            <img *ngIf="img.like =='0' || img.like == null " src="assets/icon/like-un.png" class="heart-on-image" (click)="changeLike(img)">
         </ion-col>
       </ion-row>
     </ion-grid>
     <ion-grid class="grid-category">
-        <ion-row *ngFor="let img of imgs; let i = index">
-            <ion-col  col-3  *ngIf="i%4 == 1">
+        <ion-row *ngFor="let img of imgs; let i = index" >
+            <ion-col  col-3  *ngIf="i%4 == 1" class="grid-test">
               <img class="images" src="{{img.image}}"  (click)="gotoDetail(img)" >
-              <ion-icon *ngIf="img.like==='1'" name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+              <img *ngIf="img.like=='1'" src="assets/icon/like-home.png" class="heart-on-image" (click)="changeLike(img)">
+              <img *ngIf="img.like =='0' || img.like == null " src="assets/icon/like-un.png" class="heart-on-image" (click)="changeLike(img)">
             </ion-col>
         </ion-row>
     </ion-grid>
     <ion-grid class="grid-category">
         <ion-row *ngFor="let img of imgs; let i = index">
-            <ion-col  col-3  *ngIf="i%4 == 2">
+            <ion-col  col-3  *ngIf="i%4 == 2" class="grid-test">
               <img class="images" src="{{img.image}}" (click)="gotoDetail(img)" >
-              <ion-icon *ngIf="img.like==='1' " name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+              <img *ngIf="img.like=='1'" src="assets/icon/like-home.png" class="heart-on-image" (click)="changeLike(img)">
+              <img *ngIf="img.like =='0' || img.like == null " src="assets/icon/like-un.png" class="heart-on-image" (click)="changeLike(img)">
             </ion-col>
         </ion-row>
     </ion-grid>
     <ion-grid class="grid-category">
         <ion-row *ngFor="let img of imgs; let i = index">
-            <ion-col  col-3  *ngIf="i%4 == 3">
+            <ion-col  col-3  *ngIf="i%4 == 3" class="grid-test">
               <img class="images" src="{{img.image}}" (click)="gotoDetail(img)" >
-              <ion-icon *ngIf="img.like === '1'" name = "heart" class="heart-on-image" (click)="changeLike(img)"></ion-icon> 
+              <img *ngIf="img.like=='1'" src="assets/icon/like-home.png" class="heart-on-image" (click)="changeLike(img)">
+              <img *ngIf="img.like =='0' || img.like == null " src="assets/icon/like-un.png" class="heart-on-image" (click)="changeLike(img)">
             </ion-col>
         </ion-row>
     </ion-grid> 
