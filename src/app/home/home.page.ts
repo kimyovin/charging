@@ -8,11 +8,10 @@ import { PhotoToServerController }from'../http-controller/photoToServer'
 import { GoogleVisionApiProvider }from '../http-controller/google-vision-api'
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { Router } from '@angular/router';
-import { resolve } from 'url';
-import { reject, async } from 'q';
-import { JsonPipe } from '@angular/common';
-import { parse } from 'querystring';
-import { TestingCompilerFactory } from '@angular/core/testing/src/test_compiler';
+import { NativeGeocoder,
+  NativeGeocoderReverseResult,
+  NativeGeocoderForwardResult,
+  NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 
 @Component({
   selector: 'app-home',
@@ -22,9 +21,12 @@ import { TestingCompilerFactory } from '@angular/core/testing/src/test_compiler'
 
 export class HomePage implements OnInit{
   imgs=[
-   
+    {image: 'assets/imgs/1.jpg', like: '0', creationDate: '2019-05-10', creationLocation: '성남시'}
   ];  //html에 보여지는 photo array
-  
+  options: NativeGeocoderOptions = {
+    useLocale: true, // 설정언어로 보여줌
+    maxResults: 5
+};
 
   constructor(public navCtrl: NavController,
      private photoLibrary: PhotoLibrary,
@@ -35,9 +37,10 @@ export class HomePage implements OnInit{
      private photoToServerController: PhotoToServerController,
      private router: Router,
      private googleVisionApiProvider: GoogleVisionApiProvider,
-
+     private nativeGeocoder: NativeGeocoder,
      ){
       console.log('#home들어감');
+      
   }
 
   ngOnInit(){
@@ -52,9 +55,22 @@ export class HomePage implements OnInit{
           item.library.forEach((photo)=>{
             let path: string = 'file://'+ photo.id.split(';')[1];
             let date = photo.creationDate.split('T')[0];
+            let location;
+            // this.imgs.push({image: path, like: 0, creationDate: date});
 
-            this.imgs.push({image: path, like: 0, creationDate: date});
+            // 주소 변환
+            this.nativeGeocoder.reverseGeocode(photo.latitude, photo.longitude, this.options)
+            .then((result: NativeGeocoderReverseResult[]) => {
+              if(result[0].locality == "")
+                location = result[0].administrativeArea + ' ' + result[0].subLocality;
+              else
+                location = result[0].locality +' ' + result[0].subLocality;
+              this.imgs.push({image: path, like: '0', creationDate: date, creationLocation: location});
+            })
+            .catch((error: any) => console.log(error));
+            // const location = result[0].subLocality + ', ' + result[0].locality;
 
+            
             this.photoToServerController.postCreate(path, date).subscribe(data => {
               if(JSON.stringify(data) =='"SUCCESS"'){
                 console.log("##[postCreate in home]: "+JSON.stringify(data));

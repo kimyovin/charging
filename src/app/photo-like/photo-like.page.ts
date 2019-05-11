@@ -24,7 +24,7 @@ export class PhotoLikePage implements OnInit {
       console.log('#PHOTO-LIKE: '+ JSON.stringify(data))
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item => {
-        this.imgs.push({image: item.photo_path, like: item.photo_like, creationDate: item.photo_name});
+        this.imgs.push({image: item.photo_path, like: item.photo_like, creationDate: item.photo_name, });
       })
     })
   }

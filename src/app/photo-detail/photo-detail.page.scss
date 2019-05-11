@@ -12,14 +12,14 @@
     margin-bottom: 5px;
     
   }
-.headPhotoInfo{  
-    float: center;    
-    // text-align: center;
-    // align-items: center;
 
-    // vertical-align: middle;
-    // margin-right: auto;
-    margin-left: 30%;
+.headInfoPhotoInfo{
+    position: absolute;
+    left: 30px;
+    float: center;    
+    text-align: center;
+    align-items: center;
+    width: 300px;
 }
 .edit_button{
     float:right;

@@ -22,6 +22,7 @@ import { SearchResultToServerController} from './http-controller/searchresultToS
 import { GoogleVisionApiProvider } from './http-controller/google-vision-api';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { File } from '@ionic-native/file/ngx';
+import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx'
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,6 +42,7 @@ import { File } from '@ionic-native/file/ngx';
     TagfolderToServerController,
     SearchResultToServerController,
     GoogleVisionApiProvider,
+    NativeGeocoder,
   ],
     
   bootstrap: [AppComponent]

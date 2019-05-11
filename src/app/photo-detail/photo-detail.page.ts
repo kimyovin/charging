@@ -189,7 +189,7 @@ export class PhotoDetailPage implements OnInit{
    //Add Tag
    async presentAlertPromptAdd(flag) {
     const alertModify = await this.alertController.create({
-      header: '새로운 태그 입력',
+      header: '새로운 '+ flag + '입력',
       inputs: [
         {
           name: 'newtag',
@@ -208,9 +208,9 @@ export class PhotoDetailPage implements OnInit{
           text: '완료',
           handler: data => {
             console.log('Add newtag:'+data.newtag);
-            if(flag == '0'){
+            if(flag == '태그'){
               this.tags.push(data.newtag);
-              this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag, flag).subscribe(data => {
+              this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag, '0').subscribe(data => {
                 console.log('#[PHOTO-DETAIL] postCreate response :'+ JSON.stringify(data));
                }, error => {
                 console.log(error);
@@ -218,8 +218,8 @@ export class PhotoDetailPage implements OnInit{
               console.log('Tag Upload Success !!');
             }
             else{
-              this.tags.push(data.newtag);
-              this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag, flag).subscribe(data => {
+              this.text.push(data.newtag);
+              this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag, '1').subscribe(data => {
                 console.log('#[PHOTO-DETAIL] postCreate response :'+ JSON.stringify(data));
                }, error => {
                 console.log(error);

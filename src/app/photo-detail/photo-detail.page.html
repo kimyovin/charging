@@ -2,19 +2,10 @@
     <ion-header>
       <ion-toolbar class="toolbar">
         <img src="assets/icon/left-arrow.png" (click)="gotoBack()" class="backButton">
-        <ion-label class="headPhotoInfo">{{ParPhoto.creationDate}}</ion-label><br>
-        <ion-label class="headPhotoInfo"> 위치 </ion-label>   
+        <ion-label class="headInfoPhotoInfo">{{ParPhoto.creationDate}}</ion-label><br>
+        <ion-label class="headInfoPhotoInfo">{{ParPhoto.creationLocation}}</ion-label>   
      
-        <!-- <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-icon name="arrow-back" (click)="gotoBack()" size="large" class="backButton"></ion-icon>
-            </ion-col>
-            <ion-col>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-       -->
+        
       </ion-toolbar>
   </ion-header>
   
@@ -29,7 +20,7 @@
     </div>
 -->
     <div id="photo container">
-      <img src = "{{ParPhoto.image}}"/>
+      <img src = "{{ParPhoto.image}}" style="transform:rotate(90deg);"/>
     </div>
 
     <!--Tag-->
@@ -38,7 +29,7 @@
           <ion-label slots="start">Tag</ion-label>
       </ion-row>
       <ion-row class="edit_button" size="1">
-          <ion-button slots="end"  fill="clear" (click)="presentAlertPromptAdd('0')" [hidden]="hiddenFlag" >태그 추가</ion-button>
+          <ion-button slots="end"  fill="clear" (click)="presentAlertPromptAdd('태그')" [hidden]="hiddenFlag" >태그 추가</ion-button>
       </ion-row>
       <ion-row>
         <ion-buttons *ngFor="let item of tags">
@@ -53,7 +44,7 @@
           <ion-label slots="start">Text</ion-label>
       </ion-row>
       <ion-row class="edit_button" size="1">
-        <ion-button slots="end"  fill="clear" (click)="presentAlertPromptAdd('1')" [hidden]="hiddenFlag" >텍스트 추가</ion-button>
+        <ion-button slots="end"  fill="clear" (click)="presentAlertPromptAdd('텍스트')" [hidden]="hiddenFlag" >텍스트 추가</ion-button>
     </ion-row>
       <ion-row>
         <ion-buttons *ngFor="let item of text">

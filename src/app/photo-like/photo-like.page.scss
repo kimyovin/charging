@@ -1,6 +1,14 @@
 .toolbar-1{
     height: 45px;
 }
+.backButton {
+  width: 30px;
+  height: 30px;
+  float:left;
+  margin-bottom: 5px;
+  
+}
+
 .heart-empty-icon {
   width: 30px;
   height: 30px;
@@ -27,4 +35,11 @@
 }
 .images{
   border-radius: 5px;
+}
+.heart-on-image{
+  width: 13px;
+  position: relative;
+  float:right;
+  top:-20px;
+  left:-5px;
 }
