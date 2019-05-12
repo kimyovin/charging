@@ -4,7 +4,8 @@
     <ion-toolbar class="toolbar-1" [hidden]="hiddenFlag">
         <ion-title>
             <!-- <ion-icon name="heart-empty"class="heart-empty-icon" ion-button (click)="navigate()"></ion-icon> -->
-            <ion-button fill="clear" (click)="edit_album()" class="edit-button">편집</ion-button>
+            <!-- <ion-button fill="clear" (click)="edit_album()" class="edit-button">편집</ion-button> -->
+            <ion-button fill="clear" (click)="createNewFolder()">폴더 추가</ion-button>
             <img src="assets/icon/magnifying-glass.png" class="search-icon" (click)="gotoSearch()">
             <!-- <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>         -->
           </ion-title>
@@ -13,10 +14,10 @@
   <ion-toolbar class="toolbar-1" [hidden]="!hiddenFlag">
     <ion-grid>
       <ion-row>
-          <ion-button fill="clear" (click)="createNewFolder()">+</ion-button>
+          <!-- <ion-button fill="clear" (click)="createNewFolder()">+</ion-button>
           <ion-button fill="clear">수정</ion-button>
           <ion-button fill="clear">삭제</ion-button>
-          <ion-button fill="clear" (click)="finish_edit()">완료</ion-button>
+          <ion-button fill="clear" (click)="finish_edit()">완료</ion-button> -->
       </ion-row>
     </ion-grid>
     </ion-toolbar>

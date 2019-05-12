@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar calss="toolbar-1">
       <ion-buttons slot="start">
-        <ion-back-button (click)="backtoTab3()"></ion-back-button>
+        <img src="assets/icon/left-arrow.png" (click)="backtoTab3()" class="backButton">
       </ion-buttons>
-      <ion-title class="tag_name">태그명</ion-title>
+      <ion-title class="tag_name">{{tagName}}</ion-title>
       <img src="assets/icon/magnifying-glass.png" class="search-icon" (click)="gotoSearch()">
-    <img src="assets/icon/like-un.png" class="heart-empty-icon" (click)="gotoTagFolderLike()">
+      <img src="assets/icon/like-un.png" class="heart-empty-icon" (click)="gotoTagFolderLike()">
   
     </ion-toolbar>
 </ion-header>
