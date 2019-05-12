@@ -24,7 +24,7 @@ export class SearchPage implements OnInit {
       const json = JSON.stringify(data)
       const items = JSON.parse(json)
       items.forEach(item => {
-        this.queryResults.push({image: item.photo_path_t, creationDate:item.photo_name, like: item.photo_like});
+        this.queryResults.push({image: item.photo_path, creationDate:item.photo_name, like: item.photo_like, creationLocation:item.photo_location});
         console.log("##[Search Result]item.photo_path_t: "+item.photo_path_t)
       });
       console.log('##[Search]queryResults: '+data);

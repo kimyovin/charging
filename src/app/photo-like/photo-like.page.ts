@@ -9,7 +9,7 @@ import { PhotoToServerController } from '../http-controller/photoToServer'
   styleUrls: ['./photo-like.page.scss'],
 })
 export class PhotoLikePage implements OnInit {
-  imgs=[{image: 'assets/imgs/1.jpg', like: 1, creationDate:'010101'}];
+  imgs=[];
   constructor(public navCtrl:NavController,
     private photoToServerController: PhotoToServerController,
     private router: Router,
@@ -24,7 +24,7 @@ export class PhotoLikePage implements OnInit {
       console.log('#PHOTO-LIKE: '+ JSON.stringify(data))
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item => {
-        this.imgs.push({image: item.photo_path, like: item.photo_like, creationDate: item.photo_name, });
+        this.imgs.push({image: item.photo_path, like: item.photo_like, creationDate: item.photo_name, creationLocation: item.photo_location});
       })
     })
   }

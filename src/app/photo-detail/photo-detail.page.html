@@ -19,18 +19,17 @@
       </ion-slides>
     </div>
 -->
-    <div id="photo container">
-      <img src = "{{ParPhoto.image}}" style="transform:rotate(90deg);"/>
+    <div id="photo-container">
+      <img src = "{{ParPhoto.image}}" />
     </div>
 
     <!--Tag-->
     <ion-grid>
       <ion-row>
-          <ion-label slots="start">Tag</ion-label>
+          <ion-col><ion-label slots="start">Tag</ion-label></ion-col>
+          <ion-col slots="end" class="edit_button"><ion-button  fill="clear" (click)="presentAlertPromptAdd('태그')" [hidden]="hiddenFlag" >태그 추가</ion-button></ion-col>
       </ion-row>
-      <ion-row class="edit_button" size="1">
-          <ion-button slots="end"  fill="clear" (click)="presentAlertPromptAdd('태그')" [hidden]="hiddenFlag" >태그 추가</ion-button>
-      </ion-row>
+     
       <ion-row>
         <ion-buttons *ngFor="let item of tags">
           <ion-button  *ngIf="item !== undefined" class="tag" 
@@ -41,11 +40,9 @@
     <!--Text-->
     <ion-grid>
       <ion-row>
-          <ion-label slots="start">Text</ion-label>
+        <ion-col><ion-label slots="start">Text</ion-label></ion-col>
+        <ion-col slots="end" class="edit_button"> <ion-button  fill="clear" (click)="presentAlertPromptAdd('텍스트')" [hidden]="hiddenFlag" >텍스트 추가</ion-button></ion-col>
       </ion-row>
-      <ion-row class="edit_button" size="1">
-        <ion-button slots="end"  fill="clear" (click)="presentAlertPromptAdd('텍스트')" [hidden]="hiddenFlag" >텍스트 추가</ion-button>
-    </ion-row>
       <ion-row>
         <ion-buttons *ngFor="let item of text">
           <ion-button  *ngIf="item !== undefined" class="tag" 

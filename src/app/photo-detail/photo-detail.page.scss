@@ -10,7 +10,6 @@
     height: 30px;
     float:left;
     margin-bottom: 5px;
-    
   }
 
 .headInfoPhotoInfo{
@@ -21,9 +20,12 @@
     align-items: center;
     width: 300px;
 }
+#photo-container{
+    padding-bottom: 20px; 
+}
 .edit_button{
     float:right;
-    //align-self: flex-end;
+    align-self: flex-end;
     align-items: stretch;
     flex-wrap: nowrap;
 }

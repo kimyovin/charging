@@ -26,12 +26,13 @@ export class PhotoToServerController {
     });
   }
 
-  postCreate(photoPath, photoName) {
+  postCreate(photoPath, photoName, photoLocation) {
     const httpOptions= { headers: this.headers};
     let body = {
       "fn": "create",
       "photo_path": photoPath,
-      "photo_name": photoName
+      "photo_name": photoName,
+      "photo_location": photoLocation
     }
     console.log('##Im in postCreate')
     return this.http.post(environment.serverURL+"/pphoto", body, httpOptions)

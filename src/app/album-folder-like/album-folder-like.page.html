@@ -1,12 +1,14 @@
 <ion-header>
   <ion-toolbar calss="toolbar-1">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/album-folder" text="{{folderName}}" class="backtoFolder"></ion-back-button>
+      <img src="assets/icon/left-arrow.png" (click)="gotoback()" class="backButton">
+      <ion-title class="album-name">{{folderName}}</ion-title>
+      <!-- <ion-back-button defaultHref="/album-folder" text="{{folderName}}" class="backtoFolder"></ion-back-button> -->
     </ion-buttons>
    
     <ion-title class="name">좋아하는 사진</ion-title>
-    <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>
-    <ion-icon name="heart"class="heart-icon"></ion-icon>
+    <img src="assets/icon/magnifying-glass.png" class="search-icon" (click)="gotoSearch()">
+    <img src="assets/icon/like.png" class="heart-icon">
 
   </ion-toolbar>
 </ion-header>

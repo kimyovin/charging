@@ -32,8 +32,9 @@
   }
 
   .images{
+    image-orientation: from-image;
     border-radius: 5px;
-    transform:rotate(90deg);
+    // transform:rotate(90deg);
   }
   .heart-on-image{
     width: 13px;

@@ -28,9 +28,6 @@ export class Tab2Page implements OnInit {
     private folderToServerController: FolderToServerController,
     ) {
       this.folders=[
-        {folderName: 'travel', image:'assets/image/img1.jpg'},
-        {folderName: 'study', image:'assets/image/img2.jpg'},
-        {folderName: 'friends', image:'assets/image/img3.jpg'},
       ]
       this.example = [];
    }

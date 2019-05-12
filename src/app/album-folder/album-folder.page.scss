@@ -1,24 +1,28 @@
 .toolbar-2{
     height: 45px;
 }
-
+.backButton {
+  width: 30px;
+  height: 30px;
+  float:left;
+  margin-bottom: 5px;
+}
 .name{
     position: absolute;
-    left:75px;
+    left:30px;
     top:15px;
-    
 }
-
 .heart-empty-icon {
   width: 30px;
   height: 30px;
+  margin:3px;
   float:right;
+  margin-bottom: 5px;
   }
   .search-icon {
     width: 30px;
     height: 30px;
-    margin-left:3px;
-    margin-right:3px;
+    margin:3px;
     float:right;
   }
 

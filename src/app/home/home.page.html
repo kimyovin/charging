@@ -23,7 +23,7 @@
     <ion-grid class="grid-category">
         <ion-row *ngFor="let img of imgs; let i = index" >
             <ion-col  col-3  *ngIf="i%4 == 1" class="grid-test">
-              <img class="images" src="{{img.image}}"  (click)="gotoDetail(img)" >
+              <img class="images" src="{{img.image}}"  (click)="gotoDetail(img)">
               <img *ngIf="img.like=='1'" src="assets/icon/like-home.png" class="heart-on-image" (click)="changeLike(img)">
               <img *ngIf="img.like =='0' || img.like == null " src="assets/icon/like-un.png" class="heart-on-image" (click)="changeLike(img)">
             </ion-col>
@@ -32,7 +32,7 @@
     <ion-grid class="grid-category">
         <ion-row *ngFor="let img of imgs; let i = index">
             <ion-col  col-3  *ngIf="i%4 == 2" class="grid-test">
-              <img class="images" src="{{img.image}}" (click)="gotoDetail(img)" >
+              <img class="images" src="{{img.image}}" (click)="gotoDetail(img)">
               <img *ngIf="img.like=='1'" src="assets/icon/like-home.png" class="heart-on-image" (click)="changeLike(img)">
               <img *ngIf="img.like =='0' || img.like == null " src="assets/icon/like-un.png" class="heart-on-image" (click)="changeLike(img)">
             </ion-col>
@@ -41,7 +41,7 @@
     <ion-grid class="grid-category">
         <ion-row *ngFor="let img of imgs; let i = index">
             <ion-col  col-3  *ngIf="i%4 == 3" class="grid-test">
-              <img class="images" src="{{img.image}}" (click)="gotoDetail(img)" >
+              <img class="images" src="{{img.image}}" (click)="gotoDetail(img)">
               <img *ngIf="img.like=='1'" src="assets/icon/like-home.png" class="heart-on-image" (click)="changeLike(img)">
               <img *ngIf="img.like =='0' || img.like == null " src="assets/icon/like-un.png" class="heart-on-image" (click)="changeLike(img)">
             </ion-col>

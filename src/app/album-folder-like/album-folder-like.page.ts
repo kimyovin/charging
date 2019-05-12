@@ -10,8 +10,7 @@ import { FolderToServerController } from '../http-controller/folderToServer'
 })
 export class AlbumFolderLikePage implements OnInit {
   folderName;
-  imgs=['assets/imgs/1.jpg', 'assets/imgs/2.jpg', 'assets/imgs/3.jpg', 'assets/imgs/4.jpg', 'assets/imgs/5.jpg',
-    'assets/imgs/6.jpg', 'assets/imgs/7.jpg',
+  imgs=[
   ];
   constructor(public navCtrl:NavController,
     private router: Router,
@@ -31,7 +30,9 @@ export class AlbumFolderLikePage implements OnInit {
     });
   
   }
-
+  gotoback(){
+    this.navCtrl.pop();
+  }
   
   gotoSearch(){
     this.navCtrl.navigateForward('/search');

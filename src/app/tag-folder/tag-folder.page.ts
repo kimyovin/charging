@@ -23,9 +23,14 @@ export class TagFolderPage implements OnInit {
       console.log("#tag-folder_getreadone: "+JSON.stringify(data))
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item => {
-        this.imgs.push({image: item.photo_path_t, like:item.photo_like, creationDate: item.photo_name});
+        this.imgs.push({image: item.photo_path_t, like:item.photo_like, creationDate: item.photo_name, creationLocation: item.photo_location});
       })
     })
+  }
+
+  gotoDetail(image){
+      const imgObject = JSON.stringify(this.imgs[this.imgs.indexOf(image)]);
+      this.router.navigate(['photo-detail', imgObject]);
   }
 
   getReadOne(){

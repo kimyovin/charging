@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TagfolderToServerController } from '../http-controller/tagfolderToServer';
 @Component({
   selector: 'app-tag-folder-like',
@@ -11,7 +11,8 @@ export class TagFolderLikePage implements OnInit {
   tagName;
   imgs=[];
   constructor(private activatedRoute: ActivatedRoute,
-      private tagfolderToServerController: TagfolderToServerController
+      private tagfolderToServerController: TagfolderToServerController,
+      private router: Router,
     ) { }
 
   ngOnInit() {
@@ -25,5 +26,10 @@ export class TagFolderLikePage implements OnInit {
       })
     })
   }
+
+  gotoDetail(image){
+    const imgObject = JSON.stringify(this.imgs[this.imgs.indexOf(image)]);
+    this.router.navigate(['photo-detail', imgObject]);
+}
 
 }

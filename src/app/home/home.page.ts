@@ -21,7 +21,7 @@ import { NativeGeocoder,
 
 export class HomePage implements OnInit{
   imgs=[
-    {image: 'assets/imgs/1.jpg', like: '0', creationDate: '2019-05-10', creationLocation: '성남시'}
+   
   ];  //html에 보여지는 photo array
   options: NativeGeocoderOptions = {
     useLocale: true, // 설정언어로 보여줌
@@ -48,17 +48,38 @@ export class HomePage implements OnInit{
 
     this.photoLibrary.getLibrary().subscribe({  //getLocalphoto
       next: (alibrary) => {
-        let imgs_0=[{path: 'assets/imgs/1.jpg', date: '2019-05-17'}];  //처음 DB로 들어가는 photo array
         let newimg=[];  //library가 담길 곳.
         let library = JSON.stringify(alibrary);
         newimg.concat(JSON.parse(library)).forEach((item) =>{
           item.library.forEach((photo)=>{
+            console.log('##photo: '+JSON.stringify(photo));
             let path: string = 'file://'+ photo.id.split(';')[1];
             let date = photo.creationDate.split('T')[0];
-            let location;
+            let location="";
             // this.imgs.push({image: path, like: 0, creationDate: date});
 
             // 주소 변환
+            if(photo.latitude==""){
+              console.log("##I don't have information of a location");
+              this.imgs.push({image: path, like: '0', creationDate: date, creationLocation: location});
+              this.photoToServerController.postCreate(path, date, location).subscribe(data => {
+                if(JSON.stringify(data) =='"SUCCESS"'){
+                  console.log("##[postCreate in home]: "+JSON.stringify(data));
+                  this.encodeBase64ImageTagviaCanvas(path).then(base64=> {
+                    this.googleVisionApiProvider.postGoogleVisionApi(base64).subscribe(data=>{
+                      console.log('#GoogleVisionApiProvider: '+ JSON.stringify(data))
+                      let parse_data = JSON.parse(JSON.stringify(data));
+                      this.photoToServerController.testimgPro(path, parse_data);
+                    }, err => {
+                      console.log('#GoogleVisionApiProvider_Error: '+ JSON.stringify(err))
+                    })
+                  });
+                }
+  
+              }, error => {
+                console.log("##[postCreate in home Error]: "+JSON.stringify(error));
+              });
+            }
             this.nativeGeocoder.reverseGeocode(photo.latitude, photo.longitude, this.options)
             .then((result: NativeGeocoderReverseResult[]) => {
               if(result[0].locality == "")
@@ -66,34 +87,28 @@ export class HomePage implements OnInit{
               else
                 location = result[0].locality +' ' + result[0].subLocality;
               this.imgs.push({image: path, like: '0', creationDate: date, creationLocation: location});
-            })
-            .catch((error: any) => console.log(error));
-            // const location = result[0].subLocality + ', ' + result[0].locality;
+              this.photoToServerController.postCreate(path, date, location).subscribe(data => {
+                if(JSON.stringify(data) =='"SUCCESS"'){
+                  console.log("##[postCreate in home]: "+JSON.stringify(data));
+                  this.encodeBase64ImageTagviaCanvas(path).then(base64=> {
+                    this.googleVisionApiProvider.postGoogleVisionApi(base64).subscribe(data=>{
+                      console.log('#GoogleVisionApiProvider: '+ JSON.stringify(data))
+                      let parse_data = JSON.parse(JSON.stringify(data));
+                      this.photoToServerController.testimgPro(path, parse_data);
+                    }, err => {
+                      console.log('#GoogleVisionApiProvider_Error: '+ JSON.stringify(err))
+                    })
+                  });
+                }
+  
+              }, error => {
+                console.log("##[postCreate in home Error]: "+JSON.stringify(error));
+              });
+          })
+          .catch((error: any) => console.log('#getLocalphoto: '+error));
 
-            
-            this.photoToServerController.postCreate(path, date).subscribe(data => {
-              if(JSON.stringify(data) =='"SUCCESS"'){
-                console.log("##[postCreate in home]: "+JSON.stringify(data));
-                this.encodeBase64ImageTagviaCanvas(path).then(base64=> {
-                  this.googleVisionApiProvider.postGoogleVisionApi(base64).subscribe(data=>{
-                    console.log('#GoogleVisionApiProvider: '+ JSON.stringify(data))
-                    let parse_data = JSON.parse(JSON.stringify(data));
-                    this.photoToServerController.testimgPro(path, parse_data);
-                  }, err => {
-                    console.log('#GoogleVisionApiProvider_Error: '+ JSON.stringify(err))
-                  })
-                });
-              }
-              else if(JSON.stringify(data) != null){
-                console.log('#data is null')
-              }
-
-            }, error => {
-              console.log("##[postCreate in home Error]: "+JSON.stringify(error));
-            });
           })
         });
-        console.log('#imgs_0들어갈거임')
       }
     });
 
@@ -125,30 +140,29 @@ export class HomePage implements OnInit{
   }
 
   gotoDetail(image){
-    this.encodeBase64ImageTagviaCanvas(image.image).then( base64=>{
-      console.log('#base64: '+base64);
-      this.googleVisionApiProvider.postGoogleVisionApi(base64).subscribe(data=>{
-        console.log('#GoogleVisionApiProvider: '+ JSON.stringify(data))
-        let parse_data = JSON.parse(JSON.stringify(data));
-        this.photoToServerController.testimgPro(image.image, parse_data)
-        // 여기가 메인 파싱 코드!!!
-      for (let i=0; i<parse_data.responses[0].labelAnnotations.length; i++){
-          if(parse_data.responses[0].labelAnnotations[i].score > 0.7)  // 정확도 70퍼센트 이상일 때 출력함
-          {
-            console.log('#GoogleVisionApi: '+parse_data.responses[0].labelAnnotations[i].description);
-          }
-        }
-      if(JSON.stringify(parse_data.responses[0]).includes('logoAnnotations'))
-        console.log('#LogoAnnotations: '+parse_data.responses[0].logoAnnotations[0].description);
-      if(JSON.stringify(parse_data.responses[0]).includes('landmarkAnnotations'))
-        console.log('#LandmarkAnnotations: '+parse_data.responses[0].landmarkAnnotations[0].description);
+    // this.encodeBase64ImageTagviaCanvas(image.image).then( base64=>{
+    //   console.log('#base64: '+base64);
+    //   this.googleVisionApiProvider.postGoogleVisionApi(base64).subscribe(data=>{
+    //     console.log('#GoogleVisionApiProvider: '+ JSON.stringify(data))
+    //     let parse_data = JSON.parse(JSON.stringify(data));
+    //     // 여기가 메인 파싱 코드!!!
+    //   for (let i=0; i<parse_data.responses[0].labelAnnotations.length; i++){
+    //       if(parse_data.responses[0].labelAnnotations[i].score > 0.7)  // 정확도 70퍼센트 이상일 때 출력함
+    //       {
+    //         console.log('#GoogleVisionApi: '+parse_data.responses[0].labelAnnotations[i].description);
+    //       }
+    //     }
+    //   if(JSON.stringify(parse_data.responses[0]).includes('logoAnnotations'))
+    //     console.log('#LogoAnnotations: '+parse_data.responses[0].logoAnnotations[0].description);
+    //   if(JSON.stringify(parse_data.responses[0]).includes('landmarkAnnotations'))
+    //     console.log('#LandmarkAnnotations: '+parse_data.responses[0].landmarkAnnotations[0].description);
       
-      if( JSON.stringify(parse_data.responses[0]).includes('textAnnotations'))
-          console.log('#TextAnnotation: '+parse_data.responses[0].textAnnotations[0].description);
-      }, err => {
-        console.log('#GoogleVisionApiProvider_Error: '+ JSON.stringify(err))
-      });
-    })
+    //   if( JSON.stringify(parse_data.responses[0]).includes('textAnnotations'))
+    //       console.log('#TextAnnotation: '+parse_data.responses[0].textAnnotations[0].description);
+    //   }, err => {
+    //     console.log('#GoogleVisionApiProvider_Error: '+ JSON.stringify(err))
+    //   });
+    // })
     
     const imgObject = JSON.stringify(this.imgs[this.imgs.indexOf(image)]);
     this.router.navigate(['photo-detail', imgObject]);

@@ -207,8 +207,8 @@ export class PhotoDetailPage implements OnInit{
         {
           text: '완료',
           handler: data => {
-            console.log('Add newtag:'+data.newtag);
-            if(flag == '태그'){
+            console.log('Add newtag:'+data.newtag+' flag:'+flag);
+            if(flag.includes('태그')){
               this.tags.push(data.newtag);
               this.tagToServerController.postCreate(this.ParPhoto.image, data.newtag, '0').subscribe(data => {
                 console.log('#[PHOTO-DETAIL] postCreate response :'+ JSON.stringify(data));
@@ -246,9 +246,9 @@ export class PhotoDetailPage implements OnInit{
         }
       },
       {
-        text : '태그 공유',
+        text : '텍스트 공유',
         handler: () => {
-          console.log('태그공유 clicked');
+          console.log('텍스트공유 clicked');
           this.shareOnlyTags();
 
           // this.tags.splice(this.tags.indexOf(oldtagId), 1);
@@ -264,8 +264,8 @@ export class PhotoDetailPage implements OnInit{
     }]
     });
     await actionSheet.present();
-
   }
+
   async shareOnlyImage() {
     console.log("#Im in shareOnlyImage()");
     this.socialSharing.share(null, null, this.ParPhoto.image, null)
@@ -277,7 +277,7 @@ export class PhotoDetailPage implements OnInit{
 
   }
   async shareOnlyTags() {
-    const arr = this.tags.toString();
+    const arr = this.text.toString();
     this.socialSharing.share(arr, null, null, null)
     .then((entries) => {
       // Success

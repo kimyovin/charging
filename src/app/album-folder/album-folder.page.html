@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar calss="toolbar-2">
     <ion-buttons slot="start">
-      <ion-back-button (click)="backtoTab2()"></ion-back-button>
+      <img src="assets/icon/left-arrow.png" (click)="backtoTab2()" class="backButton">
     </ion-buttons>
     <ion-title class="name">{{folderName}}</ion-title>
-    <ion-icon name="search" class="search-icon" (click)="gotoSearch()"></ion-icon>
-    <ion-icon name="heart-empty"class="heart-empty-icon" ion-button (click)="navigate()"></ion-icon>
+    <img src="assets/icon/magnifying-glass.png" class="search-icon" (click)="gotoSearch()">
+    <img src="assets/icon/like-un.png" class="heart-empty-icon" (click)="navigate()">
   </ion-toolbar>
 </ion-header>
 
