@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button class="header-button" slot="start" expand="block" (click)="gotoback()" >CANCEL</ion-button>
+    <ion-button class="header-button" slot="end" expand="block" routerLink="/album-folder/{{folderName}}" routerLinkActive="active" (click)="submit(folderName)">OK</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid class="grid-category" >
+    <ion-row *ngFor="let img of imgs; index as i">
+      <ion-col col-3  *ngIf="i%4==0" class="grid-test">
+          <img class="images" id="{{img.image}}" src="{{img.image}}" (click)="selectedImg(img)" >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="grid-category">
+      <ion-row *ngFor="let img of imgs; let i = index">
+          <ion-col  col-3  *ngIf="i%4 == 1" class="grid-test">
+            <img class="images" id="{{img.image}}" src="{{img.image}}" (click)="selectedImg(img)">
+          </ion-col>
+      </ion-row>
+  </ion-grid>
+  <ion-grid class="grid-category">
+      <ion-row *ngFor="let img of imgs; let i = index">
+          <ion-col  col-3  *ngIf="i%4 == 2" class="grid-test">
+            <img class="images"  id="{{img.image}}"src="{{img.image}}" (click)="selectedImg(img)">
+          </ion-col>
+      </ion-row>
+  </ion-grid>
+  <ion-grid class="grid-category">
+      <ion-row *ngFor="let img of imgs; let i = index">
+          <ion-col  col-3  *ngIf="i%4 == 3" class="grid-test">
+            <img class="images"  id="{{img.image}}" src="{{img.image}}" (click)="selectedImg(img)">
+          </ion-col>
+      </ion-row>
+  </ion-grid> 
+</ion-content>
+

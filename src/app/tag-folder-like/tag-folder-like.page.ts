@@ -24,7 +24,7 @@ export class TagFolderLikePage implements OnInit {
       console.log('#tag-folder-like_getReadOneLike: '+JSON.stringify(data))
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item => {
-        this.imgs.push({image: item.photo_path_t, creationDate: item.photo_name});
+        this.imgs.push({image: item.photo_path_t, like:item.photo_like, creationDate: item.photo_name, creationLocation: item.photo_location});
       })
     })
   }

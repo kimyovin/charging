@@ -2,7 +2,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size="1">
-        <ion-icon name="arrow-back" (click)="gotoBack()"  class="backButton"></ion-icon>
+        <img src="assets/icon/left-arrow.png" (click)="gotoBack()" class="backButton">
       </ion-col>
       
       <ion-col size="8">
@@ -14,12 +14,39 @@
   
 </ion-header>
 
-<ion-content padding>
-  <ion-list>
-    <ion-item class="result_ion-item" *ngFor="let item of queryResults">
-      <img slot="start" src="{{item.image}}" (click)="btn_detail(item)"/>
-      <ion-label></ion-label>
-    </ion-item>
-  </ion-list>
-    
+<ion-content>
+  <div>
+    <ion-grid class="grid-category" >
+      <ion-row *ngFor="let img of queryResults; index as i" >
+        <ion-col col-3  *ngIf="i%4==0"class="grid-test">
+            <img class="images" src="{{img.image}}"  (click)="gotoDetail(img)" >
+            <img *ngIf="img.like==='1'" src="assets/icon/like-home.png" class="heart-on-image" >
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="grid-category">
+      <ion-row *ngFor="let img of queryResults; index as i" >
+            <ion-col  col-3  *ngIf="i%4 == 1" class="grid-test">
+              <img class="images" src="{{img.image}}"  (click)="gotoDetail(img)">
+              <img *ngIf="img.like==='1'" src="assets/icon/like-home.png" class="heart-on-image">
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="grid-category">
+      <ion-row *ngFor="let img of queryResults; index as i" >
+            <ion-col  col-3  *ngIf="i%4 == 2" class="grid-test">
+              <img class="images" src="{{img.image}}" (click)="gotoDetail(img)">
+              <img *ngIf="img.like==='1'" src="assets/icon/like-home.png" class="heart-on-image" >
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid class="grid-category">
+      <ion-row *ngFor="let img of queryResults; index as i" >
+            <ion-col  col-3  *ngIf="i%4 == 3" class="grid-test">
+              <img class="images" src="{{img.image}}" (click)="gotoDetail(img)">
+              <img *ngIf="img.like==='1'" src="assets/icon/like-home.png" class="heart-on-image" >
+            </ion-col>
+        </ion-row>
+    </ion-grid> 
+  </div>
 </ion-content>

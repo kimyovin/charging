@@ -17,4 +17,26 @@
 .result_ion-item{
     width: 25%;
     border-radius: 50%;
+    padding: 5px;
 }
+
+.grid-category{
+    align-content: center;
+    overflow: hidden;
+    float: left;
+    width:25%;
+  }
+
+  .images{
+    image-orientation: from-image;
+    border-radius: 5px;
+    // transform:rotate(90deg);
+  }
+  .heart-on-image{
+    width: 13px;
+    position: relative;
+    float:right;
+    top:-20px;
+    left:-5px;
+  }
+  

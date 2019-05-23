@@ -1,0 +1,37 @@
+.header-button{
+    --background: #e6eeff;
+    --color: black;
+    width: 47%;
+    margin: 0%;
+    padding: 0%;
+}
+
+.grid-category{
+    overflow: hidden;
+    float: left;
+    width:25%;
+  }
+  .grid-row{
+    border: 2px solid salmon;
+    padding-bottom: 100%;
+  }
+
+  .grid-test{
+    align-content: center;
+  }
+
+  .images{
+    image-orientation: from-image;
+    border-radius: 5px;
+  }
+  .heart-on-image{
+    width: 13px;
+    position: relative;
+    float:right;
+    top:-20px;
+    left:-5px;
+  }
+  
+  .selectedImg{
+      background: dodgerblue;
+  }

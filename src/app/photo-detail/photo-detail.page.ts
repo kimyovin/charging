@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
+import { NavController, AlertController, ActionSheetController, ToastController} from '@ionic/angular';
 import { AppComponent } from '../app.component';
 import { ActivatedRoute} from '@angular/router';
 import { TagToServerController }from'../http-controller/tagToServer'
@@ -30,6 +30,7 @@ export class PhotoDetailPage implements OnInit{
     public alertController: AlertController,
     public appcomponent: AppComponent,
     public actionSheetController: ActionSheetController,
+    private toastController: ToastController,
     private tagToServerController: TagToServerController,
     private photolibrary: PhotoLibrary,
     private activatedRoute:ActivatedRoute,
@@ -49,6 +50,8 @@ export class PhotoDetailPage implements OnInit{
         const data = JSON.stringify(items)  
         const json = JSON.parse(data)   //0430- JSON.parse(JSON.stringify(items))
         json.forEach(item => {
+          this.ParPhoto.like = item.photo_like;
+          console.log('#Parphoto.like : '+this.ParPhoto.like);
           if(item.t_flag == 0)
             this.tags.push(item.tag_name);
           else
@@ -114,6 +117,7 @@ export class PhotoDetailPage implements OnInit{
             }, error => {
               console.log(error);
             });
+            this.presentToast(oldtagId+' 태그가 삭제되었습니다');
           }
           else{ //text 삭제
             this.text.splice(this.text.indexOf(oldtagId), 1);
@@ -122,6 +126,7 @@ export class PhotoDetailPage implements OnInit{
             }, error => {
               console.log(error);
             });
+            this.presentToast(oldtagId+' 텍스트가 삭제되었습니다');
           }
           
         }
@@ -168,6 +173,8 @@ export class PhotoDetailPage implements OnInit{
                }, error => {
                 console.log(error);
               });
+              
+              this.presentToast(data.newtag+' 태그로 수정되었습니다');
             }
             else{ //text 수정
               console.log('Modify tag: '+ document.getElementById("oldtag{{text.indexOf(item)}}") +' => '+ data.newtag);
@@ -177,6 +184,7 @@ export class PhotoDetailPage implements OnInit{
                }, error => {
                 console.log(error);
               });
+              this.presentToast(data.newtag+' 텍스트로 수정되었습니다');
             }
         }
         }
@@ -215,6 +223,7 @@ export class PhotoDetailPage implements OnInit{
                }, error => {
                 console.log(error);
               });
+              this.presentToast(data.newtag+' 태그를 추가했습니다');
               console.log('Tag Upload Success !!');
             }
             else{
@@ -224,9 +233,9 @@ export class PhotoDetailPage implements OnInit{
                }, error => {
                 console.log(error);
               });
+              this.presentToast(data.newtag+' 텍스트를 추가했습니다');
               console.log('Text Upload Success !!');
             }
-            
         }
         }
       ],
@@ -284,5 +293,14 @@ export class PhotoDetailPage implements OnInit{
     }).catch((e) => {
       // Error
     });
+  }
+
+   //toastMessage
+   async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 4000
+    });
+    toast.present();
   }
 }

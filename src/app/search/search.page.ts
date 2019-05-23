@@ -10,7 +10,8 @@ import { SearchResultToServerController } from '../http-controller/searchresultT
 })
 export class SearchPage implements OnInit {
 
-  queryResults=[];
+  queryResults=[
+  ];
 
   keyword: any;
   constructor(public navCtrl:NavController,
@@ -32,7 +33,7 @@ export class SearchPage implements OnInit {
       console.log('##[Search Error]:queryResults'+error);
     });
   }
-  btn_detail(image){
+  gotoDetail(image){
     const imgPath = JSON.stringify(this.queryResults[this.queryResults.indexOf(image)]);
     this.router.navigate(['photo-detail', imgPath]);
   }

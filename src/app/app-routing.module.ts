@@ -14,6 +14,7 @@ const routes: Routes = [
   { path: 'search', loadChildren: './search/search.module#SearchPageModule' },
   { path: 'tag-folder/:tagName', loadChildren: './tag-folder/tag-folder.module#TagFolderPageModule' },
   { path: 'tag-folder-like/:tagName', loadChildren: './tag-folder-like/tag-folder-like.module#TagFolderLikePageModule' },
+  { path: 'select-image/:folder', loadChildren: './select-image/select-image.module#SelectImagePageModule' },
  
 ];
 

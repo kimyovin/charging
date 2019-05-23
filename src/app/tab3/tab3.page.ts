@@ -11,7 +11,8 @@ import { TagfolderToServerController } from '../http-controller/tagfolderToServe
 })
 export class Tab3Page implements OnInit {
 
-  tagfolders=[];
+  tagfolders=[
+  ];
   constructor(private router:Router, public navCtrl: NavController,
     private tagfolderToServerController: TagfolderToServerController,
     ) {

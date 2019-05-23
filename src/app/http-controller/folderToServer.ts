@@ -33,9 +33,9 @@ export class FolderToServerController{
       };
       this.http.post(environment.serverURL+"/pfolder", body, httpOptions)
         .subscribe(data =>{
-          console.log(data['_body']);
+          console.log('#/pfolder postAdd: ' + JSON.stringify(data));
         }, error => {
-          console.log(error);
+          console.log('#[Error]/pfolder postAdd: ' + error);
         });
     }
 

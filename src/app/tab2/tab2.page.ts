@@ -13,6 +13,9 @@ import { FolderToServerController } from '../http-controller/folderToServer'
 })
 export class Tab2Page implements OnInit {
 
+  private sub1$: any;
+  private sub2$: any;
+
   folders: any;
   example: any;
   hiddenFlag: boolean = false;
@@ -44,7 +47,10 @@ export class Tab2Page implements OnInit {
     }, error => {
       console.log(error);
     })
+
+
   }
+
 
   edit_album() {
     this.hiddenFlag = true;
@@ -136,6 +142,7 @@ takePicture(sourceType: PictureSourceType) {
           }, error => {
             console.log(error);
           });
+          this.presentToast(oldFolder.folderName+' 폴더가 삭제되었습니다');
         }
       },
       {
@@ -187,6 +194,7 @@ takePicture(sourceType: PictureSourceType) {
             console.log('Modify Folder2: ' + oldFolder.folderName + ' => ' + data.newFolder);
             this.folders[this.folders.indexOf(oldFolder)].folderName = data.newFolder;
     
+            this.presentToast(data.newFolder+' 폴더로 수정되었습니다');
         }
         }
       ],
@@ -225,7 +233,7 @@ takePicture(sourceType: PictureSourceType) {
             }, error => {
               console.log(error);
             });
-            console.log("##Adding NewFolder Success !!");
+            this.presentToast(this.newName+' 폴더가 생성되었습니다');
           }
         }
       ],

@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { Camera } from '@ionic-native/Camera/ngx';
+import { ImagePicker } from '@ionic-native/image-picker/ngx';
 
 import { TagToServerController } from './http-controller/tagToServer';
 import { PhotoToServerController} from './http-controller/photoToServer';
@@ -32,6 +33,7 @@ import {NativeGeocoder} from '@ionic-native/native-geocoder/ngx'
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    ImagePicker,
     Camera,
     FilePath,
     SocialSharing,
