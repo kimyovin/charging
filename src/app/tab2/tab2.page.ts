@@ -13,9 +13,6 @@ import { FolderToServerController } from '../http-controller/folderToServer'
 })
 export class Tab2Page implements OnInit {
 
-  private sub1$: any;
-  private sub2$: any;
-
   folders: any;
   example: any;
   hiddenFlag: boolean = false;
@@ -25,7 +22,6 @@ export class Tab2Page implements OnInit {
     public actionSheetController: ActionSheetController,
     private toastController: ToastController,
     private platform: Platform,
-    // private imagePicker: ImagePicker,
     private camera: Camera,
     private filePath: FilePath,
     private folderToServerController: FolderToServerController,
@@ -37,12 +33,10 @@ export class Tab2Page implements OnInit {
 
   ngOnInit() {
     this.folderToServerController.getRead().subscribe(data => {
-      console.log("##[FoldergetRead]subscribe 받음: "+data)
       const json = JSON.stringify(data)
       const items = JSON.parse(json)
       items.forEach(item => {
         this.folders.push({ folderName: item.folder_name, image: item.main_photo});
-        console.log('#[FoldergetRead]ToServer| item.folder_name: '+item.folder_name+' /item.main_photo: '+item.main_photo);
       });
     }, error => {
       console.log(error);
@@ -76,10 +70,6 @@ export class Tab2Page implements OnInit {
     this.router.navigate(['album-folder', folderName]);
   }
 
-  // navigate(){
-  //   this.router.navigateByUrl('/album-folder')
-  // }
-
   //Plus new Folder
  newAddimage: string;
  newName: string;
@@ -100,7 +90,6 @@ takePicture(sourceType: PictureSourceType) {
     };
     console.log("### I'm in TakePicture() !!");
     this.camera.getPicture(options).then(imagePath => {
-      console.log('##[getPicture] item.id: '+ imagePath)
         if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
             this.filePath.resolveNativePath(imagePath)
                 .then(filePath => {
@@ -108,15 +97,11 @@ takePicture(sourceType: PictureSourceType) {
                      this.currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
                     
                      this.newAddimage = correctPath+ this.currentName;
-                     console.log('### CorrectPath: '+correctPath+' / currentName: '+ this.currentName );   
-
-                 //   this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
                 });
         } else {
             var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
             var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
             return correctPath;
-        //    this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
         }
     });
 }
@@ -127,14 +112,12 @@ takePicture(sourceType: PictureSourceType) {
       buttons: [{
         text : '수정하기',
         handler: () => {
-          console.log('수정하기 clicked');
           this.presentAlertPromptModify(oldFolder);
         }
       },
       {
         text : '삭제하기',
         handler: () => {
-          console.log('삭제하기 clicked');
           // 직접 태그 눌러서 삭제하기 기능
           this.folders.splice(this.folders.indexOf(oldFolder), 1);
           this.folderToServerController.getDel(oldFolder.folderName).subscribe(data =>{
@@ -185,13 +168,10 @@ takePicture(sourceType: PictureSourceType) {
         {
           text: '완료',
           handler: data => {
-            console.log('Modify Folder: ' + oldFolder.folderName + ' => ' + data.newFolder);
             this.folderToServerController.getUp(oldFolder.folderName, data.newFolder).subscribe(data =>{
-              console.log('##[FoldergetUp]subscribe 받음: '+data);
             }, error => {
               console.log('##[FoldergetUp]Error: '+error);
             });
-            console.log('Modify Folder2: ' + oldFolder.folderName + ' => ' + data.newFolder);
             this.folders[this.folders.indexOf(oldFolder)].folderName = data.newFolder;
     
             this.presentToast(data.newFolder+' 폴더로 수정되었습니다');
@@ -224,10 +204,8 @@ takePicture(sourceType: PictureSourceType) {
         {
           text: '완료',
           handler: data => {
-            console.log('Add newFolder:' + data.newFolder);
             this.newName = data.newFolder;
             this.folders.push({folderName: this.newName, image: this.newAddimage});
-            console.log("##NewName : "+this.newName + " || currentName : "+ this.currentName);
             this.folderToServerController.postCreate(this.newName, this.currentName, this.currentName).subscribe(data =>{
               console.log(data);
             }, error => {

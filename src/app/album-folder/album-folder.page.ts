@@ -22,34 +22,19 @@ export class AlbumFolderPage implements OnInit {
     private plt: Platform,
     private filePath: FilePath,
     ) {
-      console.log('#im in constructor at album-folder')
      }
 
   ngOnInit() {
-     console.log('#Im in ngOnInit at album-folder')
      this.folderName = (this.activatedRoute.snapshot.paramMap.get('folder'));
      
      this.getFolderphoto();
-
-     this.plt.ready().then(() => {
-      this.sub1$ = this.plt.pause.subscribe(()=> {
-        console.log('****[Album-folder]UserdashbordPage PAUSED****')
-      });
-      this.sub2$ = this.plt.resume.subscribe(()=> {
-        console.log('****[Album-folder]UserdashboardPage RESUMED****')
-        this.getFolderphoto();
-      });
-    })
   }
 
-  ngDestroy(){
-    console.log('#[Album-folder] Destoryed...')
-    this.sub1$.unsubscribe();
-    this.sub2$.unsubscribe();
+  ionViewWillEnter() {
+    this.getFolderphoto();
   }
 
   getFolderphoto(){
-    console.log('##[GetFolderPhoto] Starting...');
     this.folderToServerController.getReadOne(this.folderName).subscribe(data=> {
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item => {
@@ -59,7 +44,7 @@ export class AlbumFolderPage implements OnInit {
   }
 
   navigate(){
-    this.router.navigate(['album-folder-like', this.folderName])  // 앨범 폴더 내에 좋아하는 사진을 보여준다요
+    this.router.navigate(['album-folder-like', this.folderName])
   }
   backtoTab2(){
     this.router.navigateByUrl('/tabs/tab2')

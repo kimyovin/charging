@@ -43,7 +43,6 @@ export class SelectImagePage implements OnInit {
     document.getElementById(img.image).style.opacity = '0.5';
     document.getElementById(img.image).style.background = '#6696ff'
     this.selectedimgs_array.push(img.image);
-    console.log('selectdImg: '+img.image);
   }
   gotoback(){
     this.router.navigate(['album-folder', this.folderName])
@@ -51,9 +50,7 @@ export class SelectImagePage implements OnInit {
   submit(name){
     this.selectedimgs_array.forEach(path =>{
       this.folderToServerController.postAdd(this.folderName, path);
-      console.log('item: '+path + ' folderName: '+this.folderName);
     });
-    console.log('#name: '+name);
     this.router.navigate(['album-folder', name]);
   
   }

@@ -19,9 +19,7 @@ export class TagFolderLikePage implements OnInit {
 
   ngOnInit() {
     this.tagName=JSON.parse(this.activatedRoute.snapshot.paramMap.get('tagName'));
-    console.log('#tag-folder-like: '+ this.tagName)
     this.tagfolderToServerController.getReadOneLike(this.tagName).subscribe(data =>{
-      console.log('#tag-folder-like_getReadOneLike: '+JSON.stringify(data))
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item => {
         this.imgs.push({image: item.photo_path_t, like:item.photo_like, creationDate: item.photo_name, creationLocation: item.photo_location});
