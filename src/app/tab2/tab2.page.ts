@@ -15,7 +15,7 @@ export class Tab2Page implements OnInit {
 
   folders: any;
   example: any;
-  hiddenFlag: boolean = false;
+  hiddenFlag: boolean = false;  //false - 노멀모드, true - 편집모드
 
   constructor(private router:Router, public navCtrl:NavController,
     public alertController: AlertController,
@@ -54,11 +54,11 @@ export class Tab2Page implements OnInit {
     this.hiddenFlag = false;
   }
 
-  hideButton(){
-    this.hiddenFlag=true;
-  }
-  showButton(){
-    this.hiddenFlag=false;
+  clickFolder(folder){
+    if(this.hiddenFlag === true) //편집모드
+      this.folderModifyBtnClick(folder);
+    else  //노멀모드
+      this.gotoFolder(folder.folderName)
   }
 
   gotoSearch(){ // 검색창 페이지로 이동 
@@ -126,12 +126,6 @@ takePicture(sourceType: PictureSourceType) {
             console.log(error);
           });
           this.presentToast(oldFolder.folderName+' 폴더가 삭제되었습니다');
-        }
-      },
-      {
-        text: '진입하기',
-        handler: ()=> {
-          this.gotoFolder(oldFolder.folderName)
         }
       },
     {

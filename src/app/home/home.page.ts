@@ -23,6 +23,7 @@ export class HomePage implements OnInit{
   
   private sub1$: any;
   private sub2$: any;
+  hiddenFlag: boolean =true;
   
   imgs=[
   ];  //html에 보여지는 photo array
@@ -54,20 +55,24 @@ export class HomePage implements OnInit{
 
     this.getRead();
 
-    this.plt.ready().then(() => {
-      this.sub1$ = this.plt.pause.subscribe(()=> {
-        console.log('****[Home]UserdashbordPage PAUSED****')
-      });
-      this.sub2$ = this.plt.resume.subscribe(()=> {
-        console.log('****[Home]UserdashboardPage RESUMED****')
-        this.getLocalphoto();
-      });
-    })
+    // this.plt.ready().then(() => {
+    //   this.sub1$ = this.plt.pause.subscribe(()=> {
+    //     console.log('****[Home]UserdashbordPage PAUSED****')
+    //   });
+    //   this.sub2$ = this.plt.resume.subscribe(()=> {
+    //     console.log('****[Home]UserdashboardPage RESUMED****')
+    //     this.getLocalphoto();
+    //   });
+    // })
   }
   
   ngDestroy(){
-    this.sub1$.unsubscribe();
-    this.sub2$.unsubscribe();
+    // this.sub1$.unsubscribe();
+    // this.sub2$.unsubscribe();
+  }
+
+  edit_album() {
+        this.hiddenFlag=false;
   }
 
   getLocalphoto(){

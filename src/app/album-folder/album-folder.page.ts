@@ -26,8 +26,6 @@ export class AlbumFolderPage implements OnInit {
 
   ngOnInit() {
      this.folderName = (this.activatedRoute.snapshot.paramMap.get('folder'));
-     
-     this.getFolderphoto();
   }
 
   ionViewWillEnter() {
@@ -35,6 +33,7 @@ export class AlbumFolderPage implements OnInit {
   }
 
   getFolderphoto(){
+    this.imgs=[];
     this.folderToServerController.getReadOne(this.folderName).subscribe(data=> {
       let items = JSON.parse(JSON.stringify(data));
       items.forEach(item => {

@@ -18,6 +18,7 @@ export class SearchPage implements OnInit {
     private searchresultToServerController: SearchResultToServerController,
     private router: Router,
     ) { }
+    
   getresult(){
     this.queryResults=[];
     this.searchresultToServerController.getRead(this.keyword).subscribe(data =>{
